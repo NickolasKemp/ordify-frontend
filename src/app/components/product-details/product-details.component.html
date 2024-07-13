@@ -1,0 +1,39 @@
+<mat-dialog-content>
+	<section class="product-details">
+		<h2 class="product-details__name">{{ data.name }}</h2>
+
+		<div class="product-details__container">
+			<div class="product-details__image">
+				<img src="{{ data.images[0] }}" alt="" />
+			</div>
+			<div class="product-details__details-table">
+				<span>delivery</span>
+				<p class="product-details__del-way">{{ data.deliveryWay }}</p>
+
+				<span>description</span>
+				<p class="product-details__description">
+					{{ data.description }}
+				</p>
+				<span>quantity</span>
+				<p class="product-details__quantity">
+					{{ data.quantity }}
+				</p>
+			</div>
+		</div>
+
+		<div class="product-details__actions">
+			<div class="product-details__actions-container">
+				<p class="product-details__price">
+					{{ data.price | currency }} <span>/per item</span>
+				</p>
+				<button
+					(click)="navigateToOrder(data._id)"
+					mat-raised-button
+					[disabled]="!data.quantity"
+				>
+					Order
+				</button>
+			</div>
+		</div>
+	</section>
+</mat-dialog-content>

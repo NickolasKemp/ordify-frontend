@@ -1,0 +1,57 @@
+<div
+	class="auth-page"
+	*ngIf="
+		!(authService.isAuthStatusLoading$ | async) &&
+		!(authService.isAuth$ | async)
+	"
+>
+	<form class="form">
+		<h2 class="form__title">{{ isRegistration() ? "Sign in" : "Log in" }}</h2>
+
+		<mat-form-field appearance="outline">
+			<mat-label>Enter your email</mat-label>
+			<input
+				matInput
+				placeholder="ordify@example.com"
+				[formControl]="email"
+				(blur)="updateErrorMessage()"
+				required
+			/>
+			@if (email.invalid) {
+				<mat-error>{{ errorMessage().email }}</mat-error>
+			}
+		</mat-form-field>
+
+		<mat-form-field appearance="outline">
+			<mat-label>Enter your password</mat-label>
+			<input
+				matInput
+				[type]="hide() ? 'password' : 'text'"
+				(blur)="updateErrorMessage()"
+				[formControl]="password"
+			/>
+
+			@if (password.invalid) {
+				<mat-error>{{ errorMessage().password }}</mat-error>
+			}
+			<button
+				mat-icon-button
+				matSuffix
+				(click)="clickEvent($event)"
+				[attr.aria-label]="'Hide password'"
+				[attr.aria-pressed]="hide()"
+			>
+				<mat-icon>{{ hide() ? "visibility_off" : "visibility" }}</mat-icon>
+			</button>
+		</mat-form-field>
+		<button mat-flat-button (click)="login()" [disabled]="isLoading()">
+			Sign in
+		</button>
+
+		<mat-error>{{ serverErrorMessage() }}</mat-error>
+
+		<a class="form__toggle-auth-link" (click)="toggleAuth()">{{
+			isRegistration() ? "Login" : "Register"
+		}}</a>
+	</form>
+</div>

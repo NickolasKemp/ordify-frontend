@@ -1,0 +1,23 @@
+<div class="header">
+	<div class="header__left-actions">
+		@if ((authService.isAuthStatusLoading$ | async) === false) {
+			@if ((authService.isAuth$ | async) === true) {
+				<app-burger-menu></app-burger-menu>
+			}
+		}
+		<a class="header__logo" routerLink="/" href="">Ordify</a>
+	</div>
+	<div>
+		@if ((authService.isAuthStatusLoading$ | async) === false) {
+			@if ((authService.isAuth$ | async) === false) {
+				<a (click)="router.navigate(['auth'])" class="header__sale">Sale</a>
+			} @else {
+				<mat-icon
+					(click)="authService.logout().subscribe()"
+					class="header__logout-icon"
+					fontIcon="logout"
+				></mat-icon>
+			}
+		}
+	</div>
+</div>

@@ -1,0 +1,32 @@
+<div
+	*ngIf="product"
+	class="product-item"
+	[ngClass]="{ 'product-item_unavailable': product.quantity === 0 }"
+	(click)="openDialog(product._id)"
+>
+	<div class="product-item_image">
+		<img src="{{ product.images[0] }}" alt="" />
+	</div>
+	<h3 class="product-item__name">{{ product.name }}</h3>
+	<p class="product-item__price">{{ product.price | currency }}</p>
+	<p
+		class="product-item__del-way"
+		[ngStyle]="{
+			color: product.deliveryWay === EnumDeliveryWay.PICKUP ? '#cbcdce' : '',
+		}"
+	>
+		{{
+			product.deliveryWay === EnumDeliveryWay.PICKUP
+				? "No delivery"
+				: "With delivery"
+		}}
+	</p>
+	<p>
+		<span class="product-item_quantity">{{
+			quantityCalc(product.quantity)
+		}}</span>
+	</p>
+	<div class="product-item__button-wrapper">
+		<button class="product-item__button" mat-flat-button>Order</button>
+	</div>
+</div>

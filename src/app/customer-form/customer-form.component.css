@@ -1,0 +1,18 @@
+.customer-form {
+	min-width: 150px;
+	width: 100%;
+}
+
+.customer-form__field_full-width {
+	width: 100%;
+}
+
+.customer-form__location-details {
+	display: flex;
+	gap: 1rem;
+}
+
+.customer-form__person-and-phone-wrapper {
+	display: flex;
+	gap: 1rem;
+}

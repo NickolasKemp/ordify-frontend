@@ -1,0 +1,50 @@
+<div
+	class="menu"
+	[ngClass]="{ showMenu: showMenu() }"
+	(appClickOutside)="hideMenu()"
+>
+	<h2 class="menu__title">Admin Panel</h2>
+	<ul>
+		<li>
+			<a
+				class="menu__link"
+				routerLinkActive="menu_link_active"
+				routerLink="admin/dashboard"
+				(click)="hideMenu()"
+				>Dashboard</a
+			>
+		</li>
+		<li>
+			<a
+				class="menu__link"
+				routerLinkActive="menu_link_active"
+				routerLink="admin/products"
+				(click)="hideMenu()"
+				>Products</a
+			>
+		</li>
+		<li>
+			<a
+				class="menu__link"
+				routerLinkActive="menu_link_active"
+				routerLink="admin/orders"
+				(click)="hideMenu()"
+				>Orders</a
+			>
+		</li>
+		<li>
+			<a
+				class="menu__link"
+				routerLinkActive="menu_link_active"
+				routerLink="admin/customers"
+				(click)="hideMenu()"
+				>Customers</a
+			>
+		</li>
+	</ul>
+	<mat-icon class="menu__close" (click)="hideMenu()">close</mat-icon>
+</div>
+<button (click)="toggleMenu()" class="hamburger">
+	<!-- material icons https://material.io/resources/icons/ -->
+	<mat-icon>menu</mat-icon>
+</button>
