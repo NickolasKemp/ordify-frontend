@@ -1,4 +1,4 @@
-import { Component, inject } from "@angular/core";
+import { Component, inject, signal } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { MatButtonModule } from "@angular/material/button";
 import {
@@ -12,7 +12,7 @@ import {
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from "@angular/material/input";
 import { IProduct } from "../../models/product.model";
-import { CurrencyPipe } from "@angular/common";
+import { CurrencyPipe, NgFor } from "@angular/common";
 import { Router } from "@angular/router";
 import { ProductsService } from "../../services/products.service";
 
@@ -31,6 +31,7 @@ import { ProductsService } from "../../services/products.service";
 		MatDialogActions,
 		MatDialogClose,
 		CurrencyPipe,
+		NgFor,
 	],
 })
 export class ProductDetailsDialogComponent {
@@ -41,6 +42,8 @@ export class ProductDetailsDialogComponent {
 		private router: Router,
 		public productService: ProductsService,
 	) {}
+
+	isButtonDisabled = signal(true);
 
 	navigateToOrder(productId: string) {
 		this.dialogRef.close();

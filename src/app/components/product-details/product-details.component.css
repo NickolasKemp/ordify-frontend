@@ -31,7 +31,7 @@
 	}
 }
 
-.product-details__details-table span {
+.product-details__details-table > span {
 	color: rgb(169, 168, 168);
 }
 
@@ -52,6 +52,8 @@
 	max-width: 100%;
 }
 .product-details__del-way {
+	display: flex;
+	gap: 1rem;
 }
 .product-details__quantity {
 }
@@ -80,4 +82,11 @@
 	width: 100px;
 	display: flex;
 	flex-direction: column;
+}
+
+.product-details__option {
+	padding: 0.3rem 0.5rem;
+	background-color: var(--primary);
+	border-radius: 4px;
+	color: white;
 }

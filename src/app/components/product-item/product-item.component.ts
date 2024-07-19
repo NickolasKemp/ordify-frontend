@@ -3,6 +3,8 @@ import {
 	Component,
 	inject,
 	Input,
+	OnInit,
+	signal,
 } from "@angular/core";
 import { EnumDeliveryWay, IProduct } from "../../models/product.model";
 import { CurrencyPipe, NgClass, NgIf, NgStyle } from "@angular/common";
@@ -13,6 +15,7 @@ import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from "@angular/material/input";
 import { FormsModule } from "@angular/forms";
 import { MatDialog } from "@angular/material/dialog";
+import { Router } from "@angular/router";
 
 @Component({
 	selector: "app-product-item",
@@ -32,22 +35,43 @@ import { MatDialog } from "@angular/material/dialog";
 	styleUrl: "./product-item.component.css",
 	changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ProductItemComponent {
-	@Input() product: IProduct | undefined;
+export class ProductItemComponent implements OnInit {
+	@Input() product!: IProduct;
 
 	EnumDeliveryWay = EnumDeliveryWay;
 
-	constructor(private productsService: ProductsService) {}
+	isHasDelivery = signal(false);
+
+	constructor(
+		private productsService: ProductsService,
+		private router: Router,
+	) {}
+	ngOnInit(): void {
+		if (this.product) {
+			this.isHasDelivery.set(
+				this.product.deliveryOptions
+					.map(option => option.type)
+					.includes(EnumDeliveryWay.PICKUP) &&
+					this.product.deliveryOptions.length === 1,
+			);
+		}
+	}
 	readonly dialog = inject(MatDialog);
 	openDialog(id: string): void {
-		this.productsService.getById(id).subscribe(product =>
+		this.productsService.getById(id).subscribe(product => {
 			this.dialog.open(ProductDetailsDialogComponent, {
 				data: product,
 				panelClass: "app-dialog",
 				minWidth: "85vw",
 				// height: "85vh",
-			}),
-		);
+			});
+		});
+	}
+
+	navigateToOrder(productId: string) {
+		if (this.product.quantity === 0) return;
+
+		this.router.navigate([`order/${productId}`]);
 	}
 
 	quantityCalc(quantity: number) {

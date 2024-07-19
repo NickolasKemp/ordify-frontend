@@ -5,21 +5,17 @@
 	(click)="openDialog(product._id)"
 >
 	<div class="product-item_image">
-		<img src="{{ product.images[0] }}" alt="" />
+		<img src="{{ product.image }}" alt="" />
 	</div>
 	<h3 class="product-item__name">{{ product.name }}</h3>
 	<p class="product-item__price">{{ product.price | currency }}</p>
 	<p
 		class="product-item__del-way"
 		[ngStyle]="{
-			color: product.deliveryWay === EnumDeliveryWay.PICKUP ? '#cbcdce' : '',
+			color: isHasDelivery() ? '#cbcdce' : '',
 		}"
 	>
-		{{
-			product.deliveryWay === EnumDeliveryWay.PICKUP
-				? "No delivery"
-				: "With delivery"
-		}}
+		{{ isHasDelivery() ? "No delivery" : "With delivery" }}
 	</p>
 	<p>
 		<span class="product-item_quantity">{{
@@ -27,6 +23,12 @@
 		}}</span>
 	</p>
 	<div class="product-item__button-wrapper">
-		<button class="product-item__button" mat-flat-button>Order</button>
+		<button
+			(click)="navigateToOrder(product._id)"
+			class="product-item__button"
+			mat-flat-button
+		>
+			Order
+		</button>
 	</div>
 </div>

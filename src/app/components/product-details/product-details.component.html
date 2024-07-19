@@ -4,20 +4,26 @@
 
 		<div class="product-details__container">
 			<div class="product-details__image">
-				<img src="{{ data.images[0] }}" alt="" />
+				<img src="{{ data.image }}" alt="" />
 			</div>
-			<div class="product-details__details-table">
-				<span>delivery</span>
-				<p class="product-details__del-way">{{ data.deliveryWay }}</p>
+			<div>
+				<div class="product-details__details-table">
+					<span>delivery</span>
+					<p class="product-details__del-way">
+						<span *ngFor="let option of data.deliveryOptions">
+							<span class="product-details__option">{{ option.type }}</span>
+						</span>
+					</p>
 
-				<span>description</span>
-				<p class="product-details__description">
-					{{ data.description }}
-				</p>
-				<span>quantity</span>
-				<p class="product-details__quantity">
-					{{ data.quantity }}
-				</p>
+					<span>description</span>
+					<p class="product-details__description">
+						{{ data.description }}
+					</p>
+					<span>quantity</span>
+					<p class="product-details__quantity">
+						{{ data.quantity }}
+					</p>
+				</div>
 			</div>
 		</div>
 
@@ -30,6 +36,7 @@
 					(click)="navigateToOrder(data._id)"
 					mat-raised-button
 					[disabled]="!data.quantity"
+					tabindex="-1"
 				>
 					Order
 				</button>

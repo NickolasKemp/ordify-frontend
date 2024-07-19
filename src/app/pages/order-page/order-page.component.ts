@@ -5,8 +5,8 @@ import { CustomerFormComponent } from "../../customer-form/customer-form.compone
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from "@angular/material/input";
 import { MatSelectModule } from "@angular/material/select";
-import { EnumDeliveryWay } from "../../models/product.model";
-import { AsyncPipe, CurrencyPipe, NgIf } from "@angular/common";
+import { IDeliveryOption } from "../../models/product.model";
+import { AsyncPipe, CurrencyPipe, NgFor, NgIf } from "@angular/common";
 import { MatButtonModule } from "@angular/material/button";
 import {
 	FormBuilder,
@@ -18,11 +18,6 @@ import { OrdersService } from "../../services/orders.service";
 import { CustomersService } from "../../services/customers.service";
 import { merge } from "rxjs";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
-
-interface IDeliverySelect {
-	value: string;
-	viewValue: string;
-}
 
 @Component({
 	selector: "app-order-page",
@@ -37,6 +32,7 @@ interface IDeliverySelect {
 		MatButtonModule,
 		ReactiveFormsModule,
 		CurrencyPipe,
+		NgFor,
 	],
 
 	templateUrl: "./order-page.component.html",
@@ -99,12 +95,6 @@ export class OrderPageComponent implements OnInit {
 
 	quantityLimit = 0;
 
-	delivery: IDeliverySelect[] = [
-		{ value: EnumDeliveryWay.COURIER, viewValue: EnumDeliveryWay.COURIER },
-		{ value: EnumDeliveryWay.PICKUP, viewValue: EnumDeliveryWay.PICKUP },
-		{ value: EnumDeliveryWay.POSTAL, viewValue: EnumDeliveryWay.POSTAL },
-	];
-
 	totalPrice = signal(0);
 
 	customerErrorSignals: Record<string, string> = {
@@ -130,6 +120,8 @@ export class OrderPageComponent implements OnInit {
 			...this.productErrorSignals,
 		},
 	});
+
+	currentDeliveryOption = signal<IDeliveryOption | null>(null);
 
 	updateErrorMessages() {
 		const customerErrors: Record<string, string> = {};
@@ -199,23 +191,51 @@ export class OrderPageComponent implements OnInit {
 		});
 	}
 
-	calcTotal() {
+	onDeliveryWayChange(deliveryWay: string, deliveryOptions: IDeliveryOption[]) {
+		const currentOption = this.findDeliveryOptionByDeliveryWay(
+			deliveryWay,
+			deliveryOptions,
+		)!;
+
+		this.calcTotal(currentOption);
+		return this.currentDeliveryOption.set(currentOption);
+	}
+
+	findDeliveryOptionByDeliveryWay(
+		deliveryWay: string,
+		deliveryOptions: IDeliveryOption[],
+	) {
+		return deliveryOptions.find(option => option.type === deliveryWay);
+	}
+
+	calcTotal(currentOption?: IDeliveryOption) {
+		let totalProdsPrice = 0;
 		const quantity = this.productData.get("quantity")?.value;
 		if (quantity < 1) return;
-
 		const prodPrice = this.product$.getValue()?.price;
+		if (!currentOption) {
+			const deliveryOptions = this.product$.getValue()!.deliveryOptions;
+			const chosenDeliveryWay = this.productData.get("deliveryWay")!.value;
+			currentOption = this.findDeliveryOptionByDeliveryWay(
+				chosenDeliveryWay,
+				deliveryOptions,
+			);
+		}
 
+		const deliveryPrice = currentOption?.price ? currentOption?.price : 0;
 		if (prodPrice) {
 			if (!quantity) {
-				return this.totalPrice.set(prodPrice);
+				totalProdsPrice = prodPrice;
+				return this.totalPrice.set(totalProdsPrice + deliveryPrice!);
 			}
 
 			if (quantity <= this.quantityLimit) {
-				this.totalPrice.set(quantity * prodPrice);
+				totalProdsPrice = quantity * prodPrice;
 			} else {
-				this.totalPrice.set(this.quantityLimit * prodPrice);
+				totalProdsPrice = this.quantityLimit * prodPrice;
 			}
 		}
+		return this.totalPrice.set(totalProdsPrice + deliveryPrice!);
 	}
 }
 
