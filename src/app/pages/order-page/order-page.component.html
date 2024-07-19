@@ -5,12 +5,16 @@
 
 	<div *ngIf="product$ | async as product" class="product-preview">
 		<div class="product-preview__image">
-			<img src="{{ product.images[0] }}" alt="" />
+			<img src="{{ product.image }}" alt="" />
 		</div>
 		<h3 class="product-preview__name">{{ product.name }}</h3>
 	</div>
 
-	<form [formGroup]="productData" class="product-form">
+	<form
+		*ngIf="product$ | async as product"
+		[formGroup]="productData"
+		class="product-form"
+	>
 		<mat-form-field appearance="outline" floatLabel="always">
 			<mat-label>Amount</mat-label>
 			<input
@@ -27,16 +31,41 @@
 			<mat-error>
 				{{ errorMessages().product["quantity"] }}
 			</mat-error>
-			<span matTextSuffix> / {{ product$.getValue()?.quantity }}</span>
+			<span class="order-page__quantity-count" matTextSuffix>
+				/ {{ product$.getValue()?.quantity }}</span
+			>
 		</mat-form-field>
 		<mat-form-field appearance="outline">
 			<mat-label>Delivery</mat-label>
 			<mat-select formControlName="deliveryWay">
-				@for (option of delivery; track option) {
-					<mat-option [value]="option.value">{{ option.viewValue }}</mat-option>
-				}
+				<mat-option
+					(click)="onDeliveryWayChange(option.type, product.deliveryOptions)"
+					*ngFor="let option of product.deliveryOptions"
+					[value]="option.type"
+					>{{ option.type }}</mat-option
+				>
 			</mat-select>
 		</mat-form-field>
+		<div>
+			<div
+				class="order-page__delivery-option-details"
+				*ngIf="
+					findDeliveryOptionByDeliveryWay(
+						productData.get('deliveryWay')!.value,
+						product.deliveryOptions
+					) as deliveryOption
+				"
+			>
+				<span>Period</span>
+				<p>
+					{{ deliveryOption.period }}
+				</p>
+				<span>Price</span>
+				<p>
+					{{ deliveryOption.price | currency }}
+				</p>
+			</div>
+		</div>
 	</form>
 
 	<p class="order-page__total">Total: {{ totalPrice() | currency }}</p>
