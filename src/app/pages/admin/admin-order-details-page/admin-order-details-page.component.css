@@ -1,3 +1,60 @@
 hr.solid {
 	border-top: 3px solid #bbb;
 }
+
+.order-details {
+	display: flex;
+	flex-direction: column;
+	max-width: 350px;
+	margin: 0 auto;
+	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+	position: relative;
+}
+
+.order-details__title {
+	padding: 1rem 2rem 1rem;
+	font-size: 2rem;
+}
+
+.order-details__order-data {
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+	grid-template-rows: auto;
+	gap: 2rem;
+}
+
+.order-details__order-data span {
+	justify-self: start;
+}
+
+.order-details__order-data p {
+	justify-self: end;
+}
+
+.order-details__customer-data {
+	display: flex;
+	flex-direction: column;
+	gap: 1.5rem;
+}
+
+.order-details__actions {
+	display: flex;
+	flex-direction: column;
+}
+
+.order-details__section {
+	padding: 1rem 2rem 1rem;
+}
+
+.order-details__product-data {
+	display: flex;
+	flex-direction: column;
+	gap: 1.5rem;
+}
+
+.order-details__delete-btn {
+	position: absolute;
+	top: 1rem;
+	right: 1rem;
+	cursor: pointer;
+}

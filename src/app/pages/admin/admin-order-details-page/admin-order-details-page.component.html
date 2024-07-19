@@ -1,22 +1,51 @@
 <div *ngIf="order$ | async as order" class="order-details">
-	<div class="order-details__table">
-		<h1>Order details</h1>
-		<span>date</span>
+	<button
+		(click)="confirmCancelDialog()"
+		mat-icon-button
+		class="order-details__delete-btn"
+	>
+		<mat-icon>delete_outline</mat-icon>
+	</button>
+
+	<h1 class="order-details__title">Order details</h1>
+
+	<div class="order-details__order-data order-details__section">
+		<span>Date</span>
 		<p>{{ order.created_at | date }}</p>
-		<span>delivery</span>
+		<span>Delivery</span>
 		<p>{{ order.deliveryWay }}</p>
-		<span>total</span>
+		<span>Total</span>
 		<p>{{ order.price | currency }}</p>
 	</div>
 
 	<hr class="solid" />
 
-	<div>
+	<div
+		*ngIf="order.customer"
+		class="order-details__customer-data order-details__section"
+	>
 		<p>{{ order.customer.name }}</p>
 		<p>{{ order.customer.contactPerson }}</p>
 		<p>
 			{{ order.customer.street }}, {{ order.customer.city }},
-			{{ order.customer.state }}, {{ order.customer.code }}
+			{{ order.customer.state }}, {{ order.customer.zip }}
 		</p>
+	</div>
+
+	<hr class="solid" />
+
+	<div
+		*ngIf="order.product"
+		class="order-details__product-data order-details__section"
+	>
+		<p>{{ order.product.name }}</p>
+		<p>{{ order.quantity }}</p>
+	</div>
+	<hr class="solid" />
+
+	<div class="order-details__actions order-details__section">
+		<button (click)="generatePdf(order)" mat-flat-button>
+			Download as PDF
+		</button>
 	</div>
 </div>
