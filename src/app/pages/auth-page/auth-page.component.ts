@@ -1,10 +1,4 @@
-import {
-	Component,
-	OnChanges,
-	OnInit,
-	signal,
-	SimpleChanges,
-} from "@angular/core";
+import { Component, OnDestroy, OnInit, signal } from "@angular/core";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 import {
 	FormControl,
@@ -20,6 +14,8 @@ import { merge, Subscription } from "rxjs";
 import { AuthService } from "../../services/auth.service";
 import { Router } from "@angular/router";
 import { CommonModule } from "@angular/common";
+import { ConfirmationDialogService } from "../../services/confirmation-dialog.service";
+import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 
 @Component({
 	selector: "app-auth-page",
@@ -32,14 +28,16 @@ import { CommonModule } from "@angular/common";
 		MatIconModule,
 		MatButtonModule,
 		CommonModule,
+		MatProgressSpinnerModule,
 	],
 	templateUrl: "./auth-page.component.html",
 	styleUrl: "./auth-page.component.css",
 })
-export class AuthPageComponent implements OnInit {
+export class AuthPageComponent implements OnInit, OnDestroy {
 	constructor(
 		public authService: AuthService,
 		private router: Router,
+		private dialog: ConfirmationDialogService,
 	) {
 		merge(
 			this.email.statusChanges,
@@ -83,18 +81,6 @@ export class AuthPageComponent implements OnInit {
 	errorMessage = signal({ email: "", password: "" });
 	serverErrorMessage = signal("");
 
-	consoleInput() {
-		if (this.email.errors || this.password.errors) {
-			console.log(this.email.errors);
-			console.log(this.password.errors);
-			return;
-		}
-		console.log({
-			email: this.email.getRawValue(),
-			pass: this.password.getRawValue(),
-		});
-	}
-
 	updateErrorMessage() {
 		if (this.email.hasError("required")) {
 			this.errorMessage.set({
@@ -135,6 +121,17 @@ export class AuthPageComponent implements OnInit {
 				password,
 			};
 			if (this.isRegistration()) {
+				this.isLoading.set(true);
+				this.authService
+					.register(credentials)
+					.subscribe(
+						() => this.OkDialog(),
+						error => {
+							if (error.status === 400)
+								return this.serverErrorMessage.set(error.error.message);
+						},
+					)
+					.add(() => this.isLoading.set(false));
 			} else {
 				this.isLoading.set(true);
 				this.authService
@@ -143,13 +140,24 @@ export class AuthPageComponent implements OnInit {
 						() => this.router.navigate(["/products"]),
 						error => {
 							if (error.status === 400)
-								return this.serverErrorMessage.set(
-									"Incorrect email or password",
-								);
+								return this.serverErrorMessage.set(error.error.message);
 						},
 					)
 					.add(() => this.isLoading.set(false));
 			}
 		}
+	}
+
+	OkDialog() {
+		this.dialog
+			.confirmDialog({
+				title: "Success",
+				message: `Your account has been registered successfully. 
+			 An activation link has been sent to ordify.auth@gmail.com. 
+				You will be able to sign in once your account is activated.`,
+				confirmCaption: "Ok",
+				cancelCaption: "",
+			})
+			.subscribe();
 	}
 }

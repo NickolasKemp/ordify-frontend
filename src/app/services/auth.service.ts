@@ -22,17 +22,14 @@ export class AuthService {
 
 	constructor(private http: HttpClient) {}
 
-	register(credentials: IUser) {
-		return this.http
-			.post<AuthResponse>(`${this.API_URL}/${this.BASE}/register`, credentials)
-			.pipe(
-				tap(() => {
-					this.isAuth$.next(true);
-				}),
-			);
+	register(credentials: Pick<IUser, "email" | "password">) {
+		return this.http.post<IUser>(
+			`${this.API_URL}/${this.BASE}/register`,
+			credentials,
+		);
 	}
 
-	login(credentials: IUser) {
+	login(credentials: Pick<IUser, "email" | "password">) {
 		return this.http
 			.post<AuthResponse>(`${this.API_URL}/${this.BASE}/login`, credentials)
 			.pipe(
