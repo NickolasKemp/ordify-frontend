@@ -2,7 +2,12 @@
 	display: flex;
 	justify-content: center;
 	align-items: center;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
 	height: 100%;
+	width: 100%;
 }
 
 .form {
@@ -22,4 +27,14 @@
 	font-size: normal;
 	color: gray;
 	cursor: pointer;
+}
+
+.auth-page__spiner {
+	position: fixed;
+	top: 50%;
+	left: 50%;
+	-webkit-transform: translate(-50%, -50%);
+	transform: translate(-50%, -50%);
+	width: 100%;
+	height: 100%;
 }
