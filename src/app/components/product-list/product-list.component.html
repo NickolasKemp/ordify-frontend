@@ -1,5 +1,7 @@
 <ul class="product-list">
-	<li *ngFor="let product of products$ | async">
-		<app-product-item [product]="product"></app-product-item>
-	</li>
+	<ng-container *ngFor="let product of products$ | async">
+		<li *ngIf="product?.name">
+			<app-product-item [product]="product"></app-product-item>
+		</li>
+	</ng-container>
 </ul>
