@@ -9,6 +9,7 @@ import { HeaderComponent } from "./components/header/header.component";
 import { PageWrapperComponent } from "./components/page-wrapper/page-wrapper.component";
 import { AuthService } from "./services/auth.service";
 import { catchError, of } from "rxjs";
+import { GlobalErrorComponent } from "./components/global-error/global-error.component";
 
 @Component({
 	selector: "app-root",
@@ -22,6 +23,7 @@ import { catchError, of } from "rxjs";
 		MatSliderModule,
 		HeaderComponent,
 		PageWrapperComponent,
+		GlobalErrorComponent,
 	],
 	templateUrl: "./app.component.html",
 	styleUrl: "./app.component.scss",
@@ -33,8 +35,7 @@ export class AppComponent implements OnInit {
 			this.authService
 				.checkAuth()
 				.pipe(
-					catchError(error => {
-						console.log(error);
+					catchError(() => {
 						return of(null);
 					}),
 				)
