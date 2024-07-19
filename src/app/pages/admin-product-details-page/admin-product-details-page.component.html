@@ -1,0 +1,123 @@
+<section *ngIf="product$ | async as product" class="product-details">
+	<button
+		(click)="confirmCancelDialog()"
+		mat-icon-button
+		class="order-details__delete-btn"
+	>
+		<mat-icon>delete_outline</mat-icon>
+	</button>
+
+	<h2 class="product-details__title">Edit product</h2>
+
+	<form [formGroup]="productData" class="product-details__form">
+		<mat-form-field appearance="outline" class="full-width-input">
+			<mat-label>Product name</mat-label>
+			<input matInput formControlName="name" />
+		</mat-form-field>
+
+		<mat-form-field appearance="outline" class="full-width-input">
+			<mat-label>Description</mat-label>
+			<textarea matInput formControlName="description"></textarea>
+		</mat-form-field>
+		<div class="product-details__delivery-options-container">
+			<div
+				class="product-details__delivery-option"
+				*ngFor="let control of deliveryOptions.controls; let i = index"
+				[formGroup]="getFormGroupAtIndex(i)"
+			>
+				<span>
+					<span class="product-details__option-type">{{
+						control.value.type
+					}}</span>
+				</span>
+
+				<mat-form-field
+					class="product-details__option-field"
+					appearance="outline"
+					class="full-width-input"
+				>
+					<mat-label>Delivery period</mat-label>
+					<input matInput formControlName="period" />
+				</mat-form-field>
+				<mat-form-field
+					class="product-details__option-field"
+					appearance="outline"
+					class="full-width-input"
+				>
+					<mat-label>Delivery price</mat-label>
+					<input matInput type="number" min="0" formControlName="price" />
+				</mat-form-field>
+				<button
+					class="product-details__delivery-option-delete-btn"
+					mat-icon-button
+					(click)="deleteDeliveryWay(control.value.type)"
+				>
+					<mat-icon>delete_outline</mat-icon>
+				</button>
+			</div>
+			<mat-form-field
+				*ngIf="availableDeliveryWays.length"
+				appearance="outline"
+				class="full-width-input product-details__delivery-option-select"
+			>
+				<mat-label>Delivery way to add</mat-label>
+				<mat-select formControlName="deliveryWay">
+					@for (option of availableDeliveryWays; track option) {
+						<mat-option [value]="option">{{ option }}</mat-option>
+					}
+				</mat-select>
+			</mat-form-field>
+			<button
+				*ngIf="availableDeliveryWays.length"
+				(click)="addDeliveryWay()"
+				class="product-details__add-delivery-button"
+				mat-flat-button
+			>
+				Add delivery way
+			</button>
+		</div>
+
+		<mat-form-field appearance="outline" class="full-width-input">
+			<mat-label>Quantity</mat-label>
+			<input matInput type="number" min="0" formControlName="quantity" />
+		</mat-form-field>
+
+		<mat-form-field
+			[ngStyle]="{ display: isImgInputDisplayNone() ? 'none' : 'block' }"
+			appearance="outline"
+			class="full-width-input"
+			className="product-details__image-input"
+		>
+			<mat-label>Image url</mat-label>
+			<input matInput formControlName="image" />
+		</mat-form-field>
+		<div *ngIf="product.image" class="product-details__image-form-container">
+			<img
+				*ngIf="product.image"
+				[src]="product.image"
+				alt="product image"
+				class="product-details__image"
+			/>
+		</div>
+
+		<mat-form-field appearance="outline" class="full-width-input">
+			<mat-label>Price</mat-label>
+			<input matInput type="number" min="0" formControlName="price" />
+		</mat-form-field>
+
+		<button
+			(click)="toggleIsImgInputDisplay()"
+			class="product-details__button"
+			mat-flat-button
+		>
+			{{ product.image ? "Change image" : "Add image" }}
+		</button>
+	</form>
+	<button
+		(click)="onProductUpdate()"
+		class="product-details__button"
+		mat-flat-button
+	>
+		{{ product.name ? "Update" : "Create" }}
+	</button>
+</section>
