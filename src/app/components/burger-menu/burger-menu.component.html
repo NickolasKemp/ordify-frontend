@@ -3,7 +3,9 @@
 	[ngClass]="{ showMenu: showMenu() }"
 	(appClickOutside)="hideMenu()"
 >
-	<h2 class="menu__title">Admin Panel</h2>
+	<h2 routerLink="admin/dashboard" (click)="hideMenu()" class="menu__title">
+		Admin Panel
+	</h2>
 	<ul>
 		<li>
 			<a
