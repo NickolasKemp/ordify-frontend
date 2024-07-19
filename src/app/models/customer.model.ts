@@ -4,7 +4,7 @@ export interface ICustomer {
 	street: string;
 	city: string;
 	state: string;
-	code: number;
+	zip: number;
 	phone: string;
 	contactPerson?: string;
 }
