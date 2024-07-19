@@ -8,6 +8,9 @@ import { LiveAnnouncer } from "@angular/cdk/a11y";
 import { IOrder } from "../../../models/order.model";
 import { MatPaginator, MatPaginatorModule } from "@angular/material/paginator";
 import { Router } from "@angular/router";
+import { MatFormFieldModule } from "@angular/material/form-field";
+import { FormControl, FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { MatInputModule } from "@angular/material/input";
 
 @Component({
 	selector: "app-admin-orders-page",
@@ -21,6 +24,10 @@ import { Router } from "@angular/router";
 		DatePipe,
 		CurrencyPipe,
 		MatPaginatorModule,
+		MatFormFieldModule,
+		ReactiveFormsModule,
+		MatInputModule,
+		FormsModule,
 	],
 	templateUrl: "./admin-orders-page.component.html",
 	styleUrl: "./admin-orders-page.component.css",
@@ -39,7 +46,7 @@ export class AdminOrdersPageComponent implements OnInit, AfterViewInit {
 	orders$ = this.orderService.orders$;
 	displayedColumns: string[] = [
 		"position",
-		"created_at",
+		"createdAt",
 		"product",
 		"customer",
 		"price",
@@ -54,6 +61,13 @@ export class AdminOrdersPageComponent implements OnInit, AfterViewInit {
 	@ViewChild("paginator")
 	paginator!: MatPaginator;
 
+	readonly searchKeywordFilter = new FormControl();
+
+	applyFilter(event: Event) {
+		const filterValue = (event.target as HTMLInputElement).value;
+		this.dataSource.filter = filterValue.trim().toLowerCase();
+	}
+
 	ngAfterViewInit() {
 		this.dataSource.sortingDataAccessor = (item, property) => {
 			switch (property) {
@@ -61,12 +75,27 @@ export class AdminOrdersPageComponent implements OnInit, AfterViewInit {
 					return new Date(item.created_at).getTime();
 				case "product":
 					return item.product.name;
+				case "customer":
+					return item.customer.name;
 				default:
 					return item[property as keyof IOrder] as string;
 			}
 		};
 		this.dataSource.sort = this.sort;
 		this.dataSource.paginator = this.paginator;
+		this.dataSource.filterPredicate = (data, filter) => {
+			const transformedFilter = filter.trim().toLowerCase();
+			const createdAt = new Date(data.created_at)
+				.toLocaleDateString()
+				.toLowerCase();
+			const product = data.product.name.toLowerCase();
+			const customer = data.customer.name.toLowerCase();
+			return (
+				createdAt.includes(transformedFilter) ||
+				product.includes(transformedFilter) ||
+				customer.includes(transformedFilter)
+			);
+		};
 	}
 
 	announceSortChange(sortState: Sort) {
@@ -78,7 +107,6 @@ export class AdminOrdersPageComponent implements OnInit, AfterViewInit {
 	}
 
 	navigateToOrder(id: string) {
-		console.log("should navigate");
 		this.router.navigate([`admin/orders/${id}`]);
 	}
 }
