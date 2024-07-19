@@ -1,0 +1,12 @@
+<section class="dashboard">
+	<h2 class="dashboard__title">Dashboard</h2>
+
+	<div class="dashboard__items-wrapper">
+		<div *ngFor="let item of statistics$ | async" class="dashboard__item">
+			<h3 class="dashboard__item-title">{{ item.name }}</h3>
+			<p class="dashboard__item-title-number">
+				{{ item?.isCurrencyValue ? (item.value | currency) : item.value }}
+			</p>
+		</div>
+	</div>
+</section>
