@@ -20,7 +20,9 @@ export const authRequestInterceptor: HttpInterceptorFn = (req, next) => {
 					Authorization: `Bearer ${accessToken}`,
 				},
 			})
-		: req;
+		: req.clone({
+				withCredentials: true,
+			});
 
 	return next(authReq);
 };
@@ -44,11 +46,13 @@ export class AuthResponseInterceptor implements HttpInterceptor {
 							localStorage.setItem("accessToken", tokens.accessToken);
 
 							const clonedRequest = req.clone({
+								withCredentials: true,
 								setHeaders: {
 									Authorization: `Bearer ${tokens.accessToken}`,
 								},
 							});
 
+							this.isRetry = false;
 							return next.handle(clonedRequest);
 						}),
 						catchError(() => {
