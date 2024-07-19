@@ -1,0 +1,20 @@
+.error-line {
+	position: fixed;
+	top: 80px;
+	left: 0;
+	height: 50px;
+	display: flex;
+	align-items: center;
+	width: 100vw;
+	justify-content: center;
+	background-color: var(--danger);
+	color: white;
+}
+
+.error-line__close {
+	position: absolute;
+	top: 5px;
+	right: 2rem;
+	font-size: 2rem;
+	cursor: pointer;
+}
