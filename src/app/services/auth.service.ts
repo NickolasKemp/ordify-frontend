@@ -14,7 +14,7 @@ import { Role } from "../roles";
 	providedIn: "root",
 })
 export class AuthService {
-	API_URL = environment;
+	API_URL = environment.SERVER_URL;
 	BASE = "auth";
 
 	isAuth$ = new BehaviorSubject<boolean>(false);
