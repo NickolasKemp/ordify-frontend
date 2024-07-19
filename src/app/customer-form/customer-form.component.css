@@ -9,10 +9,24 @@
 
 .customer-form__location-details {
 	display: flex;
-	gap: 1rem;
+	flex-direction: column;
 }
 
 .customer-form__person-and-phone-wrapper {
 	display: flex;
-	gap: 1rem;
+	flex-direction: column;
+}
+
+@media screen and (min-width: 600px) {
+	.customer-form__person-and-phone-wrapper {
+		display: flex;
+		flex-direction: row;
+		gap: 1rem;
+	}
+
+	.customer-form__location-details {
+		display: flex;
+		flex-direction: row;
+		gap: 1rem;
+	}
 }
