@@ -44,4 +44,10 @@ export class OrdersService {
 			)
 			.pipe(switchMap(order => this.getAll().pipe(map(() => order))));
 	}
+
+	delete(id: string): Observable<IOrder> {
+		return this.http
+			.delete<IOrder>(`${this.API_URL}/${this.BASE}/${id}`)
+			.pipe(switchMap(order => this.getAll().pipe(map(() => order))));
+	}
 }

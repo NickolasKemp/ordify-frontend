@@ -37,4 +37,10 @@ export class CustomersService {
 			.post<ICustomer>(`${this.API_URL}/${this.BASE}`, customer)
 			.pipe(switchMap(customer => this.getAll().pipe(map(() => customer))));
 	}
+
+	delete(id: string): Observable<ICustomer> {
+		return this.http
+			.delete<ICustomer>(`${this.API_URL}/${this.BASE}/${id}`)
+			.pipe(switchMap(product => this.getAll().pipe(map(() => product))));
+	}
 }
