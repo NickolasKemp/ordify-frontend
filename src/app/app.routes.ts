@@ -8,6 +8,9 @@ import { AdminOrdersPageComponent } from "./pages/admin/admin-orders-page/admin-
 import { hasRoleGuard } from "./has-role.guard";
 import { Role } from "./roles";
 import { AdminOrderDetailsPageComponent } from "./pages/admin/admin-order-details-page/admin-order-details-page.component";
+import { AdminProductDetailsPageComponent } from "./pages/admin-product-details-page/admin-product-details-page.component";
+import { AdminCustomersPageComponent } from "./pages/admin-customers-page/admin-customers-page.component";
+import { AdminDashboardPageComponent } from "./pages/admin-dashboard-page/admin-dashboard-page.component";
 
 export const routes: Routes = [
 	{ path: "", redirectTo: "products", pathMatch: "full" },
@@ -28,6 +31,14 @@ export const routes: Routes = [
 		component: PaymentPageComponent,
 	},
 	{
+		path: "admin/dashboard",
+		canActivate: [hasRoleGuard],
+		data: {
+			roles: [Role.USER],
+		},
+		component: AdminDashboardPageComponent,
+	},
+	{
 		path: "admin/products",
 		canActivate: [hasRoleGuard],
 		data: {
@@ -44,11 +55,27 @@ export const routes: Routes = [
 		component: AdminOrdersPageComponent,
 	},
 	{
+		path: "admin/customers",
+		canActivate: [hasRoleGuard],
+		data: {
+			roles: [Role.USER],
+		},
+		component: AdminCustomersPageComponent,
+	},
+	{
 		path: "admin/orders/:id",
 		canActivate: [hasRoleGuard],
 		data: {
 			roles: [Role.USER],
 		},
 		component: AdminOrderDetailsPageComponent,
+	},
+	{
+		path: "admin/products/:id",
+		canActivate: [hasRoleGuard],
+		data: {
+			roles: [Role.USER],
+		},
+		component: AdminProductDetailsPageComponent,
 	},
 ];
