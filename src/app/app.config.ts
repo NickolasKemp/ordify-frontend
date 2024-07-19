@@ -13,6 +13,7 @@ import {
 	authRequestInterceptor,
 	AuthResponseInterceptor,
 } from "./interceptors/auth.interceptor";
+import { errorInterceptor } from "./interceptors/error.interceptor";
 
 export const appConfig: ApplicationConfig = {
 	providers: [
@@ -20,7 +21,7 @@ export const appConfig: ApplicationConfig = {
 		provideRouter(routes),
 		provideAnimationsAsync(),
 		provideHttpClient(
-			withInterceptors([authRequestInterceptor]),
+			withInterceptors([authRequestInterceptor, errorInterceptor]),
 			withInterceptorsFromDi(),
 		),
 
