@@ -1,0 +1,136 @@
+<div class="page-header">
+	<h2 class="title">Customers</h2>
+	<mat-form-field appearance="fill" class="search-input">
+		<mat-label>Search</mat-label>
+		<input
+			matInput
+			[formControl]="searchKeywordFilter"
+			type="text"
+			(keyup)="applyFilter($event)"
+			#input
+		/>
+	</mat-form-field>
+</div>
+
+<div>
+	<table
+		mat-table
+		[dataSource]="dataSource"
+		matSort
+		(matSortChange)="announceSortChange($event)"
+		class="mat-elevation-z8"
+	>
+		<ng-container matColumnDef="position">
+			<th
+				mat-header-cell
+				*matHeaderCellDef
+				mat-sort-header
+				sortActionDescription="Sort by number"
+			>
+				No.
+			</th>
+			<td mat-cell *matCellDef="let element; let i = index" data-label="No.">
+				{{ i + 1 }}
+			</td>
+		</ng-container>
+
+		<ng-container matColumnDef="created_at">
+			<th
+				mat-header-cell
+				*matHeaderCellDef
+				mat-sort-header
+				sortActionDescription="Sort by date"
+			>
+				Date
+			</th>
+			<td mat-cell *matCellDef="let element" data-label="Date">
+				{{ element.created_at | date }}
+			</td>
+		</ng-container>
+
+		<ng-container matColumnDef="name">
+			<th
+				mat-header-cell
+				*matHeaderCellDef
+				mat-sort-header
+				sortActionDescription="Sort by name"
+			>
+				Name
+			</th>
+			<td mat-cell *matCellDef="let element" data-label="Name">
+				{{ element.name }}
+			</td>
+		</ng-container>
+
+		<ng-container matColumnDef="contactPerson">
+			<th
+				mat-header-cell
+				*matHeaderCellDef
+				mat-sort-header
+				sortActionDescription="Sort by contact person"
+			>
+				Contact person
+			</th>
+			<td mat-cell *matCellDef="let element" data-label="Contact person">
+				{{ element.contactPerson }}
+			</td>
+		</ng-container>
+
+		<ng-container matColumnDef="address">
+			<th
+				mat-header-cell
+				*matHeaderCellDef
+				mat-sort-header
+				sortActionDescription="Sort by city"
+			>
+				Address
+			</th>
+			<td mat-cell *matCellDef="let element" data-label="Address">
+				{{ element.street }}, {{ element.city }}, {{ element.state }},
+				{{ element.zip }}
+			</td>
+		</ng-container>
+
+		<ng-container matColumnDef="phone">
+			<th
+				mat-header-cell
+				*matHeaderCellDef
+				mat-sort-header
+				sortActionDescription="Sort by city"
+			>
+				Phone
+			</th>
+			<td mat-cell *matCellDef="let element" data-label="Phone">
+				+1{{ element.phone }}
+			</td>
+		</ng-container>
+
+		<ng-container matColumnDef="details">
+			<th
+				mat-header-cell
+				*matHeaderCellDef
+				mat-sort-header
+				sortActionDescription="Sort by details"
+			></th>
+			<td mat-cell *matCellDef="let element">
+				<a
+					(click)="confirmCancelDialogOnDelete(element._id)"
+					class="delete-link"
+				>
+					Delete
+				</a>
+			</td>
+		</ng-container>
+
+		<tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+		<tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+	</table>
+
+	<mat-paginator
+		#paginator
+		[pageSize]="25"
+		[length]="10"
+		[pageSizeOptions]="[5, 10, 25, 50]"
+		aria-label="Select page"
+	></mat-paginator>
+</div>
