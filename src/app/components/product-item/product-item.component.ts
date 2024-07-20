@@ -39,13 +39,15 @@ export class ProductItemComponent implements OnInit {
 	@Input() product!: IProduct;
 
 	EnumDeliveryWay = EnumDeliveryWay;
-
 	isHasDelivery = signal(false);
+
+	readonly dialog = inject(MatDialog);
 
 	constructor(
 		private productsService: ProductsService,
 		private router: Router,
 	) {}
+
 	ngOnInit(): void {
 		if (this.product) {
 			this.isHasDelivery.set(
@@ -56,12 +58,12 @@ export class ProductItemComponent implements OnInit {
 			);
 		}
 	}
-	readonly dialog = inject(MatDialog);
+
 	openDialog(id: string): void {
 		this.productsService.getById(id).subscribe(product => {
 			this.dialog.open(ProductDetailsDialogComponent, {
 				data: product,
-				panelClass: "app-dialog",
+				panelClass: "app-product-details-dialog",
 				minWidth: "95vw",
 				height: "90vh",
 			});
@@ -70,7 +72,6 @@ export class ProductItemComponent implements OnInit {
 
 	navigateToOrder(productId: string) {
 		if (this.product.quantity === 0) return;
-
 		this.router.navigate([`order/${productId}`]);
 	}
 
@@ -89,5 +90,3 @@ export class ProductItemComponent implements OnInit {
 		}
 	}
 }
-
-// Todo: place at helpers folder quantityCalc

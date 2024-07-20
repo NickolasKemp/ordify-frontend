@@ -1,4 +1,4 @@
-import { Component, inject, signal } from "@angular/core";
+import { Component, inject } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { MatButtonModule } from "@angular/material/button";
 import {
@@ -18,7 +18,7 @@ import { ProductsService } from "../../services/products.service";
 import { MatIconModule } from "@angular/material/icon";
 
 @Component({
-	selector: "app-dialog",
+	selector: "app-product-details-dialog",
 	templateUrl: "./product-details.component.html",
 	styleUrls: ["./product-details.component.css"],
 	standalone: true,
@@ -44,8 +44,6 @@ export class ProductDetailsDialogComponent {
 		private router: Router,
 		public productService: ProductsService,
 	) {}
-
-	isButtonDisabled = signal(true);
 
 	navigateToOrder(productId: string) {
 		this.dialogRef.close();

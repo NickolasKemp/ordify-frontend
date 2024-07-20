@@ -55,10 +55,6 @@
 	display: flex;
 	gap: 1rem;
 }
-.product-details__quantity {
-}
-.product-details__description {
-}
 
 .product-details__actions {
 	display: flex;
