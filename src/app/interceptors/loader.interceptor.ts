@@ -6,8 +6,10 @@ import { finalize } from "rxjs";
 export const loaderInterceptor: HttpInterceptorFn = (req, next) => {
 	const loader = inject(LoaderService);
 
-	const shouldSkipLoader = req.url.includes("auth");
+	const shouldSkipLoader =
+		req.url.includes("auth/login") || req.url.includes("auth/register");
 	if (!shouldSkipLoader) {
+		console.log("loader should be shown");
 		loader.showLoader();
 	}
 	return next(req).pipe(finalize(() => loader.hideLoader()));
