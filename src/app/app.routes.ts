@@ -8,9 +8,9 @@ import { AdminOrdersPageComponent } from "./pages/admin/admin-orders-page/admin-
 import { hasRoleGuard } from "./has-role.guard";
 import { Role } from "./roles";
 import { AdminOrderDetailsPageComponent } from "./pages/admin/admin-order-details-page/admin-order-details-page.component";
-import { AdminProductDetailsPageComponent } from "./pages/admin-product-details-page/admin-product-details-page.component";
-import { AdminCustomersPageComponent } from "./pages/admin-customers-page/admin-customers-page.component";
-import { AdminDashboardPageComponent } from "./pages/admin-dashboard-page/admin-dashboard-page.component";
+import { AdminProductDetailsPageComponent } from "./pages/admin/admin-product-details-page/admin-product-details-page.component";
+import { AdminCustomersPageComponent } from "./pages/admin/admin-customers-page/admin-customers-page.component";
+import { AdminDashboardPageComponent } from "./pages/admin/admin-dashboard-page/admin-dashboard-page.component";
 
 export const routes: Routes = [
 	{ path: "", redirectTo: "products", pathMatch: "full" },
