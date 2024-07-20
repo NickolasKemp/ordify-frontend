@@ -1,20 +1,28 @@
 .error-line {
 	position: fixed;
-	top: 80px;
+	top: 60px;
 	left: 0;
-	height: 50px;
+	min-height: 50px;
 	display: flex;
 	align-items: center;
 	width: 100vw;
 	justify-content: center;
 	background-color: var(--danger);
 	color: white;
+	padding: 1rem 3rem 1rem 1rem;
+}
+
+@media screen and (min-width: 768px) {
+	.error-line {
+		top: 80px;
+	}
 }
 
 .error-line__close {
 	position: absolute;
-	top: 5px;
-	right: 2rem;
+	right: 1rem;
 	font-size: 2rem;
 	cursor: pointer;
+	top: 50%;
+	transform: translate(0, -50%);
 }
