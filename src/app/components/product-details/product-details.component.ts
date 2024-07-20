@@ -15,6 +15,7 @@ import { IProduct } from "../../models/product.model";
 import { CurrencyPipe, NgFor } from "@angular/common";
 import { Router } from "@angular/router";
 import { ProductsService } from "../../services/products.service";
+import { MatIconModule } from "@angular/material/icon";
 
 @Component({
 	selector: "app-dialog",
@@ -32,6 +33,7 @@ import { ProductsService } from "../../services/products.service";
 		MatDialogClose,
 		CurrencyPipe,
 		NgFor,
+		MatIconModule,
 	],
 })
 export class ProductDetailsDialogComponent {

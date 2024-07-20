@@ -62,8 +62,8 @@ export class ProductItemComponent implements OnInit {
 			this.dialog.open(ProductDetailsDialogComponent, {
 				data: product,
 				panelClass: "app-dialog",
-				minWidth: "85vw",
-				height: "85vh",
+				minWidth: "95vw",
+				height: "95vh",
 			});
 		});
 	}

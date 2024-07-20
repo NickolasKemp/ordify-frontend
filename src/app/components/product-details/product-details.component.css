@@ -93,4 +93,11 @@
 
 .mat-mdc-dialog-content {
 	max-height: 100vh;
+	position: relative;
+}
+
+.header__close-btn {
+	position: absolute;
+	top: 0.5rem;
+	right: 0.5rem;
 }

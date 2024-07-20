@@ -1,7 +1,14 @@
 <mat-dialog-content>
 	<section class="product-details">
 		<h2 class="product-details__name">{{ data.name }}</h2>
-
+		<button
+			tabindex="-1"
+			class="header__close-btn"
+			mat-icon-button
+			[mat-dialog-close]="false"
+		>
+			<mat-icon>close</mat-icon>
+		</button>
 		<div class="product-details__container">
 			<div class="product-details__image">
 				<img src="{{ data.image }}" alt="" />
