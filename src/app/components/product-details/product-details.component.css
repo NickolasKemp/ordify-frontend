@@ -90,3 +90,7 @@
 	border-radius: 4px;
 	color: white;
 }
+
+.mat-mdc-dialog-content {
+	max-height: 100vh;
+}
