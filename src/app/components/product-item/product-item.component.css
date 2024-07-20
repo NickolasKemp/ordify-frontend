@@ -4,7 +4,7 @@
 	grid-template: 1fr repeat(5, auto) / 1fr;
 	row-gap: 1rem;
 	padding: 1rem;
-	border: 1px #cbcdce solid;
+	border: 1px #edeff0 solid;
 	cursor: pointer;
 	height: 100%;
 }
