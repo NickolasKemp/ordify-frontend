@@ -63,7 +63,7 @@ export class ProductItemComponent implements OnInit {
 				data: product,
 				panelClass: "app-dialog",
 				minWidth: "95vw",
-				height: "95vh",
+				height: "90vh",
 			});
 		});
 	}
