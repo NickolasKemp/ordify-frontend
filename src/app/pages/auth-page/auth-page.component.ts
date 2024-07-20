@@ -72,7 +72,7 @@ export class AuthPageComponent implements OnInit, OnDestroy {
 		Validators.minLength(4),
 	]);
 
-	isRegistration = signal(true);
+	isRegistration = signal(false);
 	toggleAuth() {
 		this.isRegistration.set(!this.isRegistration());
 		this.serverErrorMessage.set("");
