@@ -10,5 +10,11 @@ export const loaderInterceptor: HttpInterceptorFn = (req, next) => {
 	if (!shouldSkipLoader) {
 		loader.showLoader();
 	}
-	return next(req).pipe(finalize(() => loader.hideLoader()));
+	return next(req).pipe(
+		finalize(() => {
+			if (!shouldSkipLoader) {
+				loader.hideLoader();
+			}
+		}),
+	);
 };
