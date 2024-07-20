@@ -10,6 +10,7 @@ import { PageWrapperComponent } from "./components/page-wrapper/page-wrapper.com
 import { AuthService } from "./services/auth.service";
 import { catchError, of } from "rxjs";
 import { GlobalErrorComponent } from "./components/global-error/global-error.component";
+import { SpinnerComponent } from "./components/spinner/spinner.component";
 
 @Component({
 	selector: "app-root",
@@ -24,6 +25,7 @@ import { GlobalErrorComponent } from "./components/global-error/global-error.com
 		HeaderComponent,
 		PageWrapperComponent,
 		GlobalErrorComponent,
+		SpinnerComponent,
 	],
 	templateUrl: "./app.component.html",
 	styleUrl: "./app.component.scss",
