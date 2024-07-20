@@ -1,5 +1,4 @@
 import { Component, OnInit, AfterViewInit, ViewChild } from "@angular/core";
-import { OrderItemComponent } from "../../../components/order-item/order-item.component";
 import { OrdersService } from "../../../services/orders.service";
 import { AsyncPipe, CurrencyPipe, DatePipe, NgFor } from "@angular/common";
 import { MatTableDataSource, MatTableModule } from "@angular/material/table";
@@ -16,7 +15,6 @@ import { MatInputModule } from "@angular/material/input";
 	selector: "app-admin-orders-page",
 	standalone: true,
 	imports: [
-		OrderItemComponent,
 		NgFor,
 		AsyncPipe,
 		MatTableModule,
