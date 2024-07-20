@@ -1,7 +1,7 @@
 import { Component, OnInit, signal } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
-import { ProductsService } from "../../services/products.service";
-import { ConfirmationDialogService } from "../../services/confirmation-dialog.service";
+import { ProductsService } from "../../../services/products.service";
+import { ConfirmationDialogService } from "../../../services/confirmation-dialog.service";
 import { MatInputModule } from "@angular/material/input";
 import { AsyncPipe, NgFor, NgIf, NgStyle } from "@angular/common";
 import {
@@ -15,7 +15,7 @@ import {
 	DeliveryOption,
 	EnumDeliveryWay,
 	IProduct,
-} from "../../models/product.model";
+} from "../../../models/product.model";
 import { MatSelectModule } from "@angular/material/select";
 import { MatButtonModule } from "@angular/material/button";
 import { MatIconModule } from "@angular/material/icon";
