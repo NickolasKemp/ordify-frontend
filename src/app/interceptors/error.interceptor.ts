@@ -8,9 +8,14 @@ export const errorInterceptor: HttpInterceptorFn = (req, next) => {
 
 	return next(req).pipe(
 		catchError((error: HttpErrorResponse) => {
-			if (!(error.status === 401 || error.status === 400)) {
-				errorService.handle(error.message);
+			const isAuthRequest = req.url.includes("/auth");
+			if ((error.status === 400 && isAuthRequest) || error.status === 401) {
+				return throwError(() => error);
 			}
+
+			errorService.handle(
+				error.error.message ? error.error.message : error.message,
+			);
 			return throwError(() => error);
 		}),
 	);
