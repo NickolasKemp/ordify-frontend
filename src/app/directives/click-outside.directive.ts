@@ -22,7 +22,6 @@ export class ClickedOutsideDirective {
 			!this.elemRef.nativeElement.contains(event.target)
 		) {
 			this.appClickOutside.emit();
-			console.log("clickOutside");
 		}
 	}
 
