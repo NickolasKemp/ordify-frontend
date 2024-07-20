@@ -33,7 +33,7 @@ export class OrdersService {
 	}
 
 	create(
-		order: Omit<IOrder, "id" | "createdAt" | "product" | "customer">,
+		order: Omit<IOrder, "_id" | "createdAt" | "product" | "customer">,
 		customerId: string,
 		productId: string,
 	): Observable<IOrder> {
