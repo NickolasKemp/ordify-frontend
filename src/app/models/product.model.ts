@@ -37,7 +37,7 @@ export class Product implements Partial<IProduct> {
 export class DeliveryOption implements IDeliveryOption {
 	constructor(
 		public type = EnumDeliveryWay.PICKUP,
-		public period = "",
+		public period = "immediate",
 		public price = 0,
 	) {
 		this.type = type;
