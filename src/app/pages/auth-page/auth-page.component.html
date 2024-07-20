@@ -9,7 +9,7 @@
 			"
 			class="form"
 		>
-			<h2 class="form__title">{{ isRegistration() ? "Sign in" : "Log in" }}</h2>
+			<h2 class="form__title">{{ isRegistration() ? "Sign up" : "Log in" }}</h2>
 
 			<mat-form-field appearance="outline">
 				<mat-label>Enter your email</mat-label>
@@ -48,7 +48,7 @@
 				</button>
 			</mat-form-field>
 			<button mat-flat-button (click)="login()" [disabled]="isLoading()">
-				Sign in
+				{{ isRegistration() ? "Sing up" : "Log in" }}
 			</button>
 
 			<mat-error>{{ serverErrorMessage() }}</mat-error>
