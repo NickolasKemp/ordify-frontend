@@ -44,3 +44,11 @@
 	gap: 1rem;
 	align-items: center;
 }
+
+.search-input {
+	position: absolute;
+	top: 50%;
+	left: 150px;
+	/* transform: translateY(-50%); */
+	margin-top: -35px;
+}

@@ -1,0 +1,11 @@
+<mat-form-field appearance="fill" class="search-input">
+	<mat-label>Search</mat-label>
+	<input
+		matInput
+		[(ngModel)]="searchKeywordFilter"
+		(input)="applySearch()"
+		type="text"
+		#input
+	/>
+	<mat-icon matIconSuffix>search</mat-icon>
+</mat-form-field>

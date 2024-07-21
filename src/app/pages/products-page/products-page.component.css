@@ -1,0 +1,15 @@
+.products-page {
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+	margin-top: -30px;
+}
+
+.search-input {
+	flex-basis: 20%;
+}
+
+.search-input-wrapper {
+	display: flex;
+	justify-content: center;
+}
