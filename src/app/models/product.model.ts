@@ -21,6 +21,12 @@ export enum EnumDeliveryWay {
 	PICKUP = "PICKUP",
 }
 
+export interface IProductResponse {
+	products: IProduct[];
+	totalPages: number;
+	totalProducts: number;
+}
+
 export class Product implements Partial<IProduct> {
 	constructor(
 		public name = "",
