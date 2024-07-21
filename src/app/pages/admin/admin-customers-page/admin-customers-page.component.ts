@@ -8,7 +8,6 @@ import { LiveAnnouncer } from "@angular/cdk/a11y";
 import { Router } from "@angular/router";
 import { ICustomer } from "../../../models/customer.model";
 import { ConfirmationDialogService } from "../../../services/confirmation-dialog.service";
-import { OrdersService } from "../../../services/orders.service";
 import { FormControl, FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from "@angular/material/input";
@@ -36,7 +35,6 @@ export class AdminCustomersPageComponent implements OnInit, AfterViewInit {
 		private _liveAnnouncer: LiveAnnouncer,
 		private router: Router,
 		private dialog: ConfirmationDialogService,
-		private orderService: OrdersService,
 	) {}
 	ngOnInit() {
 		this.customersService.getAll().subscribe();
