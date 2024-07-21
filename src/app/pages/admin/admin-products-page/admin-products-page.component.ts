@@ -41,7 +41,7 @@ export class AdminProductsPageComponent implements OnInit, AfterViewInit {
 	ngOnInit() {
 		this.productsService
 			.getAll()
-			.subscribe(products => (this.dataSource.data = products));
+			.subscribe(response => (this.dataSource.data = response.products));
 	}
 	products$ = this.productsService.products$;
 	displayedColumns: string[] = [

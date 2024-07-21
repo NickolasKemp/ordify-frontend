@@ -1,7 +1,16 @@
 <ul class="product-list">
-	<ng-container *ngFor="let product of products$ | async">
+	<ng-container *ngFor="let product of dataSource.data">
 		<li *ngIf="product?.name">
 			<app-product-item [product]="product"></app-product-item>
 		</li>
 	</ng-container>
 </ul>
+<mat-paginator
+	(page)="handlePageEvent($event)"
+	[pageSizeOptions]="pageSizeOptions"
+	[pageSize]="pageSize"
+	class="sticky left-0"
+	[length]="length"
+	[pageIndex]="pageIndex"
+	aria-label="Select page"
+></mat-paginator>

@@ -1,7 +1,11 @@
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpParams } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { BehaviorSubject, map, Observable, switchMap, tap } from "rxjs";
-import { IDeliveryOption, IProduct } from "../models/product.model";
+import {
+	IDeliveryOption,
+	IProduct,
+	IProductResponse,
+} from "../models/product.model";
 import { environment } from "../../environments/environment";
 
 @Injectable({
@@ -20,10 +24,32 @@ export class ProductsService {
 	productById$: BehaviorSubject<IProduct | null> =
 		new BehaviorSubject<IProduct | null>(null);
 
-	getAll(): Observable<IProduct[]> {
+	pagination = new BehaviorSubject<{ page: number; pageSize: number }>({
+		page: 0,
+		pageSize: 10,
+	});
+	searchTerm = new BehaviorSubject<string>("");
+
+	getAll(
+		searchTerm = this.searchTerm.getValue(),
+		page = this.pagination.getValue().page,
+		pageSize = this.pagination.getValue().pageSize,
+	): Observable<IProductResponse> {
+		let params = new HttpParams();
+		if (searchTerm) {
+			params = params.set("searchTerm", searchTerm);
+		}
+
+		if (page !== undefined && pageSize !== undefined) {
+			params = params.set("page", page);
+			params = params.set("pageSize", pageSize);
+		}
+
+		console.log(params);
+
 		return this.http
-			.get<IProduct[]>(`${this.API_URL}/${this.BASE}`)
-			.pipe(tap(products => this.products$.next(products)));
+			.get<IProductResponse>(`${this.API_URL}/${this.BASE}`, { params })
+			.pipe(tap(response => this.products$.next(response.products)));
 	}
 
 	getById(id: string): Observable<IProduct> {
