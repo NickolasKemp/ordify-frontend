@@ -39,6 +39,8 @@ import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 	styleUrl: "./order-page.component.css",
 })
 export class OrderPageComponent implements OnInit {
+	isLoading = signal(false);
+
 	constructor(
 		private route: ActivatedRoute,
 		private productsService: ProductsService,
@@ -146,6 +148,10 @@ export class OrderPageComponent implements OnInit {
 				if (controlErrors["max"]) {
 					productErrors[key] = "Enter less value";
 				}
+
+				if (controlErrors["min"]) {
+					productErrors[key] = "Enter a positive value";
+				}
 			}
 		});
 
@@ -163,6 +169,7 @@ export class OrderPageComponent implements OnInit {
 			return;
 		}
 
+		this.isLoading.set(true);
 		this.customersService
 			.create(this.customerData.value)
 			.subscribe(customer => {
@@ -181,7 +188,8 @@ export class OrderPageComponent implements OnInit {
 						.create(order, customer._id, productId)
 						.subscribe(() => this.router.navigate(["/order/payment/success"]));
 				}
-			});
+			})
+			.add(() => this.isLoading.set(false));
 	}
 
 	markFormGroupTouched(formGroup: FormGroup) {
@@ -238,7 +246,3 @@ export class OrderPageComponent implements OnInit {
 		return this.totalPrice.set(totalProdsPrice + deliveryPrice!);
 	}
 }
-
-// Todo: button disabled on is loading
-// Todo: implement payment
-// Todo: validation on checking wether amount is less than 1

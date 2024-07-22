@@ -24,7 +24,6 @@
 				matInput
 				type="number"
 				placeholder="1"
-				required
 				(blur)="updateErrorMessages()"
 				(change)="calcTotal()"
 			/>
@@ -71,6 +70,8 @@
 	<p class="order-page__total">Total: {{ totalPrice() | currency }}</p>
 
 	<div class="order-page__button">
-		<button (click)="onPlaceOrder()" mat-flat-button>Place order</button>
+		<button [disabled]="isLoading()" (click)="onPlaceOrder()" mat-flat-button>
+			Place order
+		</button>
 	</div>
 </section>
