@@ -1,7 +1,7 @@
 import { Component, DestroyRef, inject, OnInit, signal } from "@angular/core";
 import { ActivatedRoute, Router } from "@angular/router";
 import { ProductsService } from "../../services/products.service";
-import { CustomerFormComponent } from "../../customer-form/customer-form.component";
+import { CustomerFormComponent } from "../../components/customer-form/customer-form.component";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from "@angular/material/input";
 import { MatSelectModule } from "@angular/material/select";
