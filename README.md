@@ -1,5 +1,9 @@
 ## Run With Docker
 
+```bash
+  docker compose up
+```
+
 ## Run Locally
 
 Clone the project
