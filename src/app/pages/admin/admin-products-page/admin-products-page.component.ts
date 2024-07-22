@@ -33,16 +33,6 @@ import { MatInputModule } from "@angular/material/input";
 	styleUrl: "./admin-products-page.component.css",
 })
 export class AdminProductsPageComponent implements OnInit, AfterViewInit {
-	constructor(
-		private productsService: ProductsService,
-		private _liveAnnouncer: LiveAnnouncer,
-		private router: Router,
-	) {}
-	ngOnInit() {
-		this.productsService
-			.getAll()
-			.subscribe(response => (this.dataSource.data = response.products));
-	}
 	products$ = this.productsService.products$;
 	displayedColumns: string[] = [
 		"position",
@@ -63,9 +53,16 @@ export class AdminProductsPageComponent implements OnInit, AfterViewInit {
 
 	readonly searchKeywordFilter = new FormControl("");
 
-	applyFilter(event: Event) {
-		const filterValue = (event.target as HTMLInputElement).value;
-		this.dataSource.filter = filterValue.trim().toLowerCase();
+	constructor(
+		private productsService: ProductsService,
+		private _liveAnnouncer: LiveAnnouncer,
+		private router: Router,
+	) {}
+
+	ngOnInit() {
+		this.productsService
+			.getAll()
+			.subscribe(response => (this.dataSource.data = response.products));
 	}
 
 	ngAfterViewInit() {
@@ -79,6 +76,11 @@ export class AdminProductsPageComponent implements OnInit, AfterViewInit {
 		};
 		this.dataSource.sort = this.sort;
 		this.dataSource.paginator = this.paginator;
+	}
+
+	applyFilter(event: Event) {
+		const filterValue = (event.target as HTMLInputElement).value;
+		this.dataSource.filter = filterValue.trim().toLowerCase();
 	}
 
 	announceSortChange(sortState: Sort) {
