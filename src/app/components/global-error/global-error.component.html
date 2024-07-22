@@ -1,4 +1,9 @@
 <div *ngIf="errorService.error$ | async as error" class="error-line">
-	{{ error }}
-	<span (click)="errorService.clear()" class="error-line__close">&times;</span>
+	<div class="error-line__container layout">
+		{{ error }}
+
+		<span (click)="errorService.clear()" class="error-line__close"
+			>&times;</span
+		>
+	</div>
 </div>

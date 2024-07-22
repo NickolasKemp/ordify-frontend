@@ -100,6 +100,11 @@ body {
 	color: var(--text);
 }
 
+.layout {
+	max-width: 1600px;
+	margin: 0 auto;
+}
+
 :root {
 	--primary: #f09414;
 	--secondary: #002236;

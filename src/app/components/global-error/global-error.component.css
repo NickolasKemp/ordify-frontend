@@ -9,20 +9,32 @@
 	justify-content: center;
 	background-color: var(--danger);
 	color: white;
-	padding: 1rem 3rem 1rem 1rem;
 }
 
-@media screen and (min-width: 768px) {
-	.error-line {
-		top: 80px;
-	}
+.error-line__container {
+	position: relative;
+	width: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: 1rem 3rem 1rem 1rem;
 }
 
 .error-line__close {
 	position: absolute;
-	right: 2vw;
 	font-size: 2rem;
+	right: 15px;
 	cursor: pointer;
 	top: 50%;
 	transform: translate(0, -50%);
+}
+
+@media screen and (min-width: 768px) {
+	.error-line {
+		top: 70px;
+	}
+
+	.error-line__close {
+		right: 25px;
+	}
 }
