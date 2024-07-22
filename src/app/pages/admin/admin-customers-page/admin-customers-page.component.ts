@@ -30,18 +30,6 @@ import { MatInputModule } from "@angular/material/input";
 	styleUrl: "./admin-customers-page.component.css",
 })
 export class AdminCustomersPageComponent implements OnInit, AfterViewInit {
-	constructor(
-		private customersService: CustomersService,
-		private _liveAnnouncer: LiveAnnouncer,
-		private router: Router,
-		private dialog: ConfirmationDialogService,
-	) {}
-	ngOnInit() {
-		this.customersService.getAll().subscribe();
-		this.customers$.subscribe(customers => {
-			this.dataSource.data = customers!;
-		});
-	}
 	customers$ = this.customersService.customers$;
 	displayedColumns: string[] = [
 		"position",
@@ -61,6 +49,20 @@ export class AdminCustomersPageComponent implements OnInit, AfterViewInit {
 	paginator!: MatPaginator;
 
 	readonly searchKeywordFilter = new FormControl("");
+
+	constructor(
+		private customersService: CustomersService,
+		private _liveAnnouncer: LiveAnnouncer,
+		private router: Router,
+		private dialog: ConfirmationDialogService,
+	) {}
+
+	ngOnInit() {
+		this.customersService.getAll().subscribe();
+		this.customers$.subscribe(customers => {
+			this.dataSource.data = customers!;
+		});
+	}
 
 	applyFilter(event: Event) {
 		const filterValue = (event.target as HTMLInputElement).value;
