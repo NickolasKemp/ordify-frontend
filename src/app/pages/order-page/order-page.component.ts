@@ -186,10 +186,12 @@ export class OrderPageComponent implements OnInit {
 				if (productId) {
 					this.ordersService
 						.create(order, customer._id, productId)
-						.subscribe(() => this.router.navigate(["/order/payment/success"]));
+						.subscribe(() => {
+							this.router.navigate(["/order/payment/success"]);
+						})
+						.add(() => this.isLoading.set(false));
 				}
-			})
-			.add(() => this.isLoading.set(false));
+			});
 	}
 
 	markFormGroupTouched(formGroup: FormGroup) {
