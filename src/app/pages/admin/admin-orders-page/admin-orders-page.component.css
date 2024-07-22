@@ -60,9 +60,6 @@ td {
 		display: none;
 	}
 
-	.mat-mdc-table .mat-sort-header-container {
-	}
-
 	.mat-mdc-table .mat-mdc-header-row {
 		display: flex;
 		padding-left: 1rem;
@@ -70,9 +67,6 @@ td {
 		gap: 0.5rem;
 		flex-wrap: wrap;
 		height: 100%;
-	}
-
-	.mat-mdc-table tr.mat-mdc-row {
 	}
 
 	.mat-mdc-table .mat-mdc-cell {

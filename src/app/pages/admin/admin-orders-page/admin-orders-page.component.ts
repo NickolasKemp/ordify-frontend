@@ -31,16 +31,6 @@ import { MatInputModule } from "@angular/material/input";
 	styleUrl: "./admin-orders-page.component.css",
 })
 export class AdminOrdersPageComponent implements OnInit, AfterViewInit {
-	constructor(
-		private orderService: OrdersService,
-		private _liveAnnouncer: LiveAnnouncer,
-		private router: Router,
-	) {}
-	ngOnInit() {
-		this.orderService
-			.getAll()
-			.subscribe(orders => (this.dataSource.data = orders));
-	}
 	orders$ = this.orderService.orders$;
 	displayedColumns: string[] = [
 		"position",
@@ -60,6 +50,18 @@ export class AdminOrdersPageComponent implements OnInit, AfterViewInit {
 	paginator!: MatPaginator;
 
 	readonly searchKeywordFilter = new FormControl();
+
+	constructor(
+		private orderService: OrdersService,
+		private _liveAnnouncer: LiveAnnouncer,
+		private router: Router,
+	) {}
+
+	ngOnInit() {
+		this.orderService
+			.getAll()
+			.subscribe(orders => (this.dataSource.data = orders));
+	}
 
 	applyFilter(event: Event) {
 		const filterValue = (event.target as HTMLInputElement).value;
