@@ -1,0 +1,11 @@
+version: "3.8"
+
+services:
+  ordify-frontend:
+    build: .
+    container_name: ordify-frontend
+    ports:
+      - "4200:4200"
+    volumes:
+      - ./:/usr/src/app
+      - /usr/src/app/node_modules
