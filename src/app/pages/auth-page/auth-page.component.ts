@@ -34,36 +34,6 @@ import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 	styleUrl: "./auth-page.component.css",
 })
 export class AuthPageComponent implements OnInit, OnDestroy {
-	constructor(
-		public authService: AuthService,
-		private router: Router,
-		private dialog: ConfirmationDialogService,
-	) {
-		merge(
-			this.email.statusChanges,
-			this.email.valueChanges,
-			this.password.statusChanges,
-			this.password.valueChanges,
-		)
-			.pipe(takeUntilDestroyed())
-			.subscribe(() => this.updateErrorMessage());
-	}
-	private authSubscription!: Subscription;
-
-	ngOnInit(): void {
-		this.authSubscription = this.authService.isAuth$.subscribe(isAuth => {
-			if (isAuth) {
-				this.router.navigate([""]);
-			}
-		});
-	}
-
-	ngOnDestroy(): void {
-		if (this.authSubscription) {
-			this.authSubscription.unsubscribe();
-		}
-	}
-
 	isLoading = signal(false);
 
 	readonly email = new FormControl("", [Validators.required, Validators.email]);
@@ -80,6 +50,37 @@ export class AuthPageComponent implements OnInit, OnDestroy {
 
 	errorMessage = signal({ email: "", password: "" });
 	serverErrorMessage = signal("");
+
+	private authSubscription!: Subscription;
+
+	constructor(
+		public authService: AuthService,
+		private router: Router,
+		private dialog: ConfirmationDialogService,
+	) {
+		merge(
+			this.email.statusChanges,
+			this.email.valueChanges,
+			this.password.statusChanges,
+			this.password.valueChanges,
+		)
+			.pipe(takeUntilDestroyed())
+			.subscribe(() => this.updateErrorMessage());
+	}
+
+	ngOnInit(): void {
+		this.authSubscription = this.authService.isAuth$.subscribe(isAuth => {
+			if (isAuth) {
+				this.router.navigate([""]);
+			}
+		});
+	}
+
+	ngOnDestroy(): void {
+		if (this.authSubscription) {
+			this.authSubscription.unsubscribe();
+		}
+	}
 
 	updateErrorMessage() {
 		if (this.email.hasError("required")) {
@@ -124,25 +125,25 @@ export class AuthPageComponent implements OnInit, OnDestroy {
 				this.isLoading.set(true);
 				this.authService
 					.register(credentials)
-					.subscribe(
-						() => this.OkDialog(),
-						error => {
+					.subscribe({
+						next: () => this.OkDialog(),
+						error: error => {
 							if (error.status === 400)
 								return this.serverErrorMessage.set(error.error.message);
 						},
-					)
+					})
 					.add(() => this.isLoading.set(false));
 			} else {
 				this.isLoading.set(true);
 				this.authService
 					.login(credentials)
-					.subscribe(
-						() => this.router.navigate(["/products"]),
-						error => {
+					.subscribe({
+						next: () => this.router.navigate(["/products"]),
+						error: error => {
 							if (error.status === 400)
 								return this.serverErrorMessage.set(error.error.message);
 						},
-					)
+					})
 					.add(() => this.isLoading.set(false));
 			}
 		}
