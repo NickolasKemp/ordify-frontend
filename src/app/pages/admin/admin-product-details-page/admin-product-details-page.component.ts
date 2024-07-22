@@ -61,7 +61,7 @@ export class AdminProductDetailsPageComponent implements OnInit {
 				image: [product.image],
 			});
 			this.deliveryWays = product.deliveryOptions.map(option => option.type);
-			this.allDeliveryWays = this.getEnumValues(EnumDeliveryWay);
+			this.allDeliveryWays = Object.values(EnumDeliveryWay);
 			this.availableDeliveryWays = this.allDeliveryWays.filter(
 				way => !this.deliveryWays.includes(way),
 			);
@@ -154,12 +154,6 @@ export class AdminProductDetailsPageComponent implements OnInit {
 		this.productsService
 			.update(this.route.snapshot.paramMap.get("id")!, updatedProdFields)
 			.subscribe(() => this.router.navigate(["admin/products"]));
-	}
-
-	getEnumValues<T extends object>(enumType: T): T[keyof T][] {
-		return Object.values(enumType).filter(
-			value => typeof value === "string",
-		) as T[keyof T][];
 	}
 
 	addDeliveryWay() {
