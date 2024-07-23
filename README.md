@@ -12,7 +12,7 @@
 Clone the project
 
 ```bash
-  git clone https://github.com/NickolasKemp/ordify-backend.git
+  git clone https://github.com/NickolasKemp/ordify-frontend.git
 ```
 
 Install dependencies
