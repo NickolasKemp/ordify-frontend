@@ -23,7 +23,7 @@
 				[max]="product$.getValue()?.quantity!"
 				matInput
 				type="number"
-				placeholder="1"
+				required
 				(blur)="updateErrorMessages()"
 				(change)="calcTotal()"
 			/>
