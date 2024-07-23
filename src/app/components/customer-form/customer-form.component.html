@@ -24,7 +24,11 @@
 				type="tel"
 				matInput
 				placeholder="555-555-1234"
+				required
 			/>
+			<mat-error>
+				{{ errorMessages?.["phone"] }}
+			</mat-error>
 		</mat-form-field>
 	</div>
 

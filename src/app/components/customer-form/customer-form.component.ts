@@ -21,4 +21,5 @@ import { MatInputModule } from "@angular/material/input";
 })
 export class CustomerFormComponent {
 	@Input() formGroup: FormGroup | undefined;
+	@Input() errorMessages: Record<string, string> | undefined;
 }

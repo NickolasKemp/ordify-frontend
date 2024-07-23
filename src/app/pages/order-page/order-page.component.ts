@@ -9,9 +9,12 @@ import { IDeliveryOption } from "../../models/product.model";
 import { AsyncPipe, CurrencyPipe, NgFor, NgIf } from "@angular/common";
 import { MatButtonModule } from "@angular/material/button";
 import {
+	AbstractControl,
 	FormBuilder,
 	FormGroup,
 	ReactiveFormsModule,
+	ValidationErrors,
+	ValidatorFn,
 	Validators,
 } from "@angular/forms";
 import { OrdersService } from "../../services/orders.service";
@@ -52,7 +55,7 @@ export class OrderPageComponent implements OnInit {
 		this.customerData = this.fb.group({
 			name: ["", Validators.required],
 			contactPerson: ["", Validators.required],
-			phone: ["", [Validators.required, Validators.pattern("^[0-9]{10}$")]],
+			phone: ["", [Validators.required, this.phoneNumberValidator()]],
 			street: ["", Validators.required],
 			city: ["", Validators.required],
 			state: ["", Validators.required],
@@ -139,6 +142,10 @@ export class OrderPageComponent implements OnInit {
 				if (controlErrors["required"]) {
 					customerErrors[key] = "You must enter a value";
 				}
+
+				if (controlErrors["invalidPhoneNumber"]) {
+					customerErrors[key] = "Phone number must be 10 digits";
+				}
 			}
 		});
 
@@ -163,6 +170,13 @@ export class OrderPageComponent implements OnInit {
 			customer: customerErrors,
 			product: productErrors,
 		});
+	}
+
+	phoneNumberValidator(): ValidatorFn {
+		return (control: AbstractControl): ValidationErrors | null => {
+			const valid = /^[0-9]{10}$/.test(control.value);
+			return valid ? null : { invalidPhoneNumber: true };
+		};
 	}
 
 	onPlaceOrder() {

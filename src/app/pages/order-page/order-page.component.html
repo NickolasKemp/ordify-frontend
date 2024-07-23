@@ -1,5 +1,8 @@
 <section class="order-page">
-	<app-customer-form [formGroup]="customerData"></app-customer-form>
+	<app-customer-form
+		[errorMessages]="errorMessages().customer"
+		[formGroup]="customerData"
+	></app-customer-form>
 
 	<h3 class="order-page__buying-title">You're buying</h3>
 
@@ -24,7 +27,6 @@
 				matInput
 				type="number"
 				required
-				(blur)="updateErrorMessages()"
 				(change)="calcTotal()"
 			/>
 			<mat-error>
