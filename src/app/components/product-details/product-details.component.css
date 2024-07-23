@@ -41,6 +41,7 @@
 
 .product-details__name {
 	font-size: 30px;
+	padding-right: 20px;
 }
 .product-details__image {
 	flex-grow: 0;
