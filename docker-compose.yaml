@@ -4,8 +4,3 @@ services:
     container_name: ordify-frontend
     ports:
       - "4200:4200"
-    volumes:
-      - ./:/usr/src/app
-      - node_modules:/usr/src/app/node_modules
-volumes:
-  node_modules:
