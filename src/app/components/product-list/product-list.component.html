@@ -6,6 +6,7 @@
 	</ng-container>
 </ul>
 <mat-paginator
+	*ngIf="dataSource.data.length"
 	(page)="handlePageEvent($event)"
 	[pageSizeOptions]="pageSizeOptions"
 	[pageSize]="pageSize"
