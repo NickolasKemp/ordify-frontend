@@ -60,7 +60,7 @@ export class OrderPageComponent implements OnInit {
 		});
 
 		this.productData = this.fb.group({
-			quantity: [1, Validators.min(1)],
+			quantity: [1],
 			deliveryWay: ["", Validators.required],
 		});
 
@@ -82,7 +82,11 @@ export class OrderPageComponent implements OnInit {
 				this.quantityLimit = product.quantity;
 				this.productData
 					.get("quantity")
-					?.setValidators([Validators.max(this.quantityLimit)]);
+					?.setValidators([
+						Validators.max(this.quantityLimit),
+						Validators.min(1),
+						Validators.required,
+					]);
 				this.productData.get("quantity")?.updateValueAndValidity();
 			});
 		}
