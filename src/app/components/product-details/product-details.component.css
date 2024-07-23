@@ -54,6 +54,7 @@
 .product-details__del-way {
 	display: flex;
 	gap: 1rem;
+	flex-wrap: wrap;
 }
 
 .product-details__actions {
