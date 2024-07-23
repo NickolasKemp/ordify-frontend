@@ -52,7 +52,7 @@ export class OrderPageComponent implements OnInit {
 		this.customerData = this.fb.group({
 			name: ["", Validators.required],
 			contactPerson: ["", Validators.required],
-			phone: ["", Validators.required],
+			phone: ["", [Validators.required, Validators.pattern("^[0-9]{10}$")]],
 			street: ["", Validators.required],
 			city: ["", Validators.required],
 			state: ["", Validators.required],
@@ -191,11 +191,13 @@ export class OrderPageComponent implements OnInit {
 					this.ordersService
 						.create(order, customer._id, productId)
 						.subscribe(() => {
+							this.isLoading.set(true);
 							this.router.navigate(["/order/payment/success"]);
 						})
 						.add(() => this.isLoading.set(false));
 				}
-			});
+			})
+			.add(() => this.isLoading.set(false));
 	}
 
 	markFormGroupTouched(formGroup: FormGroup) {
