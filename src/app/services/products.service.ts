@@ -45,8 +45,6 @@ export class ProductsService {
 			params = params.set("pageSize", pageSize);
 		}
 
-		console.log(params);
-
 		return this.http
 			.get<IProductResponse>(`${this.API_URL}/${this.BASE}`, { params })
 			.pipe(tap(response => this.products$.next(response.products)));
