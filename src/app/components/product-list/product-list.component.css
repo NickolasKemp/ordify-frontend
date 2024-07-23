@@ -1,11 +1,8 @@
 .product-list {
-	/* display: flex;
-	flex-direction: column;
-	align-items: center; */
-
 	display: grid;
 	grid-template-columns: repeat(auto-fit, 15em);
 	justify-content: center;
+	margin-bottom: 1rem;
 }
 
 .product-list > * {
@@ -14,11 +11,4 @@
 
 .product-list > *:hover {
 	box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
-
-@media screen and (min-width: 770px) {
-	.product-list {
-		/* flex-wrap: wrap;
-		flex-direction: row; */
-	}
 }
