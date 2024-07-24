@@ -188,9 +188,8 @@ export class OrderPageComponent implements OnInit {
 		}
 
 		this.isLoading.set(true);
-		this.customersService
-			.create(this.customerData.value)
-			.subscribe(customer => {
+		this.customersService.create(this.customerData.value).subscribe({
+			next: customer => {
 				const order = {
 					...this.productData.value,
 					price: this.totalPrice(),
@@ -210,8 +209,9 @@ export class OrderPageComponent implements OnInit {
 						})
 						.add(() => this.isLoading.set(false));
 				}
-			})
-			.add(() => this.isLoading.set(false));
+			},
+			error: () => this.isLoading.set(false),
+		});
 	}
 
 	markFormGroupTouched(formGroup: FormGroup) {
