@@ -202,10 +202,10 @@ export class OrderPageComponent implements OnInit {
 				const productId = this.product$.getValue()?._id;
 
 				if (productId) {
+					this.isLoading.set(true);
 					this.ordersService
 						.create(order, customer._id, productId)
 						.subscribe(() => {
-							this.isLoading.set(true);
 							this.router.navigate(["/order/payment/success"]);
 						})
 						.add(() => this.isLoading.set(false));
