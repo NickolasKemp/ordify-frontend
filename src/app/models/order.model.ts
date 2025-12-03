@@ -1,6 +1,8 @@
 import { ICustomer } from "./customer.model";
 import { EnumDeliveryWay, IProduct } from "./product.model";
 
+export type PaymentStatus = "pending" | "paid" | "failed";
+
 export interface IOrder {
 	_id: string;
 	created_at: Date;
@@ -9,4 +11,8 @@ export interface IOrder {
 	product: IProduct;
 	customer: ICustomer;
 	deliveryWay: EnumDeliveryWay;
+	// Payment fields
+	paymentStatus?: PaymentStatus;
+	paymentIntentId?: string;
+	paidAt?: Date;
 }

@@ -1,79 +1,178 @@
 <section class="order-page">
-	<app-customer-form
-		[errorMessages]="errorMessages().customer"
-		[formGroup]="customerData"
-	></app-customer-form>
+	<!-- Крок 1: Огляд замовлення -->
+	<div *ngIf="currentStep() === 'review'" class="order-step">
+		<app-customer-form
+			[errorMessages]="errorMessages().customer"
+			[formGroup]="customerData"
+		></app-customer-form>
 
-	<h3 class="order-page__buying-title">You're buying</h3>
+		<h3 class="order-page__buying-title">You're buying</h3>
 
-	<div *ngIf="product$ | async as product" class="product-preview">
-		<div class="product-preview__image">
-			<img src="{{ product.image }}" alt="" />
+		<div *ngIf="product$ | async as product" class="product-preview">
+			<div class="product-preview__image">
+				<img src="{{ product.image }}" alt="" />
+			</div>
+			<h3 class="product-preview__name">{{ product.name }}</h3>
 		</div>
-		<h3 class="product-preview__name">{{ product.name }}</h3>
+
+		<form
+			*ngIf="product$ | async as product"
+			[formGroup]="productData"
+			class="product-form"
+		>
+			<mat-form-field appearance="outline" floatLabel="always">
+				<mat-label>Amount</mat-label>
+				<input
+					formControlName="quantity"
+					min="1"
+					[max]="product$.getValue()?.quantity!"
+					matInput
+					type="number"
+					required
+					(change)="calcTotal()"
+				/>
+				<mat-error>
+					{{ errorMessages().product["quantity"] }}
+				</mat-error>
+				<span class="order-page__quantity-count" matTextSuffix>
+					/ {{ product$.getValue()?.quantity }}</span
+				>
+			</mat-form-field>
+			<mat-form-field appearance="outline">
+				<mat-label>Delivery</mat-label>
+				<mat-select formControlName="deliveryWay">
+					<mat-option
+						(click)="onDeliveryWayChange(option.type, product.deliveryOptions)"
+						*ngFor="let option of product.deliveryOptions"
+						[value]="option.type"
+						>{{ option.type }}</mat-option
+					>
+				</mat-select>
+			</mat-form-field>
+			<div>
+				<div
+					class="order-page__delivery-option-details"
+					*ngIf="
+						findDeliveryOptionByDeliveryWay(
+							productData.get('deliveryWay')!.value,
+							product.deliveryOptions
+						) as deliveryOption
+					"
+				>
+					<span>Period</span>
+					<p>
+						{{ deliveryOption.period }}
+					</p>
+					<span>Price</span>
+					<p>
+						{{ deliveryOption.price | currency }}
+					</p>
+				</div>
+			</div>
+		</form>
+
+		<p class="order-page__total">Total: {{ totalPrice() | currency }}</p>
+
+		<div class="order-page__button">
+			<button [disabled]="isLoading()" (click)="onPlaceOrder()" mat-flat-button>
+				Place order
+			</button>
+		</div>
 	</div>
 
-	<form
-		*ngIf="product$ | async as product"
-		[formGroup]="productData"
-		class="product-form"
-	>
-		<mat-form-field appearance="outline" floatLabel="always">
-			<mat-label>Amount</mat-label>
-			<input
-				formControlName="quantity"
-				min="1"
-				[max]="product$.getValue()?.quantity!"
-				matInput
-				type="number"
-				required
-				(change)="calcTotal()"
-			/>
-			<mat-error>
-				{{ errorMessages().product["quantity"] }}
-			</mat-error>
-			<span class="order-page__quantity-count" matTextSuffix>
-				/ {{ product$.getValue()?.quantity }}</span
-			>
-		</mat-form-field>
-		<mat-form-field appearance="outline">
-			<mat-label>Delivery</mat-label>
-			<mat-select formControlName="deliveryWay">
-				<mat-option
-					(click)="onDeliveryWayChange(option.type, product.deliveryOptions)"
-					*ngFor="let option of product.deliveryOptions"
-					[value]="option.type"
-					>{{ option.type }}</mat-option
+	<!-- Крок 2: Оплата -->
+	<div *ngIf="currentStep() === 'payment'" class="order-step payment-step">
+		<div class="payment-header">
+			<button mat-icon-button (click)="onBackToReview()">
+				<mat-icon>arrow_back</mat-icon>
+			</button>
+			<h2>Payment</h2>
+		</div>
+
+		<div class="payment-summary">
+			<h3>Order Summary</h3>
+			<div *ngIf="product$ | async as product" class="payment-product">
+				<span>{{ product.name }}</span>
+				<span>x{{ productData.get("quantity")?.value }}</span>
+			</div>
+			<p class="payment-total">Total: {{ totalPrice() | currency }}</p>
+		</div>
+
+		<div class="payment-form-container">
+			<h3>Card Details</h3>
+			<p class="stripe-test-notice">
+				<mat-icon>info</mat-icon>
+				Use test card: 4242 4242 4242 4242
+			</p>
+
+			<form [formGroup]="paymentData" class="payment-form">
+				<mat-form-field appearance="outline" class="full-width">
+					<mat-label>Card Number</mat-label>
+					<input
+						formControlName="cardNumber"
+						matInput
+						placeholder="4242 4242 4242 4242"
+						maxlength="19"
+					/>
+					<mat-icon matSuffix>credit_card</mat-icon>
+					<mat-error>Enter a valid card number</mat-error>
+				</mat-form-field>
+
+				<div class="payment-row">
+					<mat-form-field appearance="outline">
+						<mat-label>Month</mat-label>
+						<input
+							formControlName="expMonth"
+							matInput
+							placeholder="MM"
+							maxlength="2"
+						/>
+						<mat-error>Invalid</mat-error>
+					</mat-form-field>
+
+					<mat-form-field appearance="outline">
+						<mat-label>Year</mat-label>
+						<input
+							formControlName="expYear"
+							matInput
+							placeholder="YY"
+							maxlength="2"
+						/>
+						<mat-error>Invalid</mat-error>
+					</mat-form-field>
+
+					<mat-form-field appearance="outline">
+						<mat-label>CVC</mat-label>
+						<input
+							formControlName="cvc"
+							matInput
+							placeholder="123"
+							maxlength="4"
+							type="password"
+						/>
+						<mat-error>Invalid</mat-error>
+					</mat-form-field>
+				</div>
+			</form>
+
+			<div *ngIf="paymentError()" class="payment-error">
+				<mat-icon>error</mat-icon>
+				{{ paymentError() }}
+			</div>
+
+			<div class="order-page__button">
+				<button
+					[disabled]="isLoading() || paymentData.invalid"
+					(click)="onConfirmPayment()"
+					mat-flat-button
+					color="primary"
 				>
-			</mat-select>
-		</mat-form-field>
-		<div>
-			<div
-				class="order-page__delivery-option-details"
-				*ngIf="
-					findDeliveryOptionByDeliveryWay(
-						productData.get('deliveryWay')!.value,
-						product.deliveryOptions
-					) as deliveryOption
-				"
-			>
-				<span>Period</span>
-				<p>
-					{{ deliveryOption.period }}
-				</p>
-				<span>Price</span>
-				<p>
-					{{ deliveryOption.price | currency }}
-				</p>
+					<mat-icon *ngIf="isLoading()">hourglass_empty</mat-icon>
+					{{
+						isLoading() ? "Processing..." : "Pay " + (totalPrice() | currency)
+					}}
+				</button>
 			</div>
 		</div>
-	</form>
-
-	<p class="order-page__total">Total: {{ totalPrice() | currency }}</p>
-
-	<div class="order-page__button">
-		<button [disabled]="isLoading()" (click)="onPlaceOrder()" mat-flat-button>
-			Place order
-		</button>
 	</div>
 </section>

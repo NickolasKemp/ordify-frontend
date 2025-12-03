@@ -1,3 +1,173 @@
-p {
-	margin: 0 30px;
+.confirmation-container {
+	max-width: 600px;
+	margin: 2rem auto;
+	padding: 0 1rem;
+}
+
+.loading-state,
+.error-state {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	min-height: 300px;
+	gap: 1rem;
+	text-align: center;
+}
+
+.error-icon {
+	font-size: 4rem;
+	width: 4rem;
+	height: 4rem;
+	color: #f44336;
+}
+
+.confirmation-card {
+	animation: slideUp 0.4s ease-out;
+}
+
+@keyframes slideUp {
+	from {
+		opacity: 0;
+		transform: translateY(20px);
+	}
+	to {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
+
+.success-header {
+	display: flex;
+	align-items: center;
+	gap: 1rem;
+}
+
+.success-icon {
+	font-size: 3rem;
+	width: 3rem;
+	height: 3rem;
+	color: #4caf50;
+}
+
+mat-card-header {
+	margin-bottom: 1.5rem;
+}
+
+mat-card-title {
+	font-size: 1.5rem !important;
+	margin-bottom: 0.25rem;
+}
+
+mat-card-subtitle {
+	font-size: 1rem !important;
+	color: #666;
+}
+
+.order-details,
+.customer-info {
+	background-color: #f9f9f9;
+	padding: 1rem;
+	border-radius: 8px;
+	margin-bottom: 1rem;
+}
+
+.order-details h3,
+.customer-info h3 {
+	margin: 0 0 1rem 0;
+	font-size: 1rem;
+	color: #666;
+	text-transform: uppercase;
+	letter-spacing: 0.5px;
+}
+
+.detail-row {
+	display: flex;
+	justify-content: space-between;
+	align-items: flex-start;
+	margin-bottom: 0.75rem;
+}
+
+.detail-row:last-child {
+	margin-bottom: 0;
+}
+
+.label {
+	color: #888;
+	font-size: 0.9rem;
+	flex-shrink: 0;
+}
+
+.value {
+	text-align: right;
+	font-weight: 500;
+	max-width: 60%;
+	word-break: break-word;
+}
+
+.order-id {
+	font-family: monospace;
+	font-size: 0.8rem;
+	background-color: #e0e0e0;
+	padding: 0.25rem 0.5rem;
+	border-radius: 4px;
+}
+
+.divider {
+	height: 1px;
+	background-color: #ddd;
+	margin: 1rem 0;
+}
+
+.total-row {
+	font-size: 1.1rem;
+}
+
+.total-price {
+	font-size: 1.25rem;
+	color: #1976d2;
+}
+
+.status-badge {
+	padding: 0.25rem 0.75rem;
+	border-radius: 12px;
+	font-size: 0.85rem;
+	font-weight: 600;
+}
+
+.status-pending {
+	background-color: #fff3e0;
+	color: #e65100;
+}
+
+.status-paid {
+	background-color: #e8f5e9;
+	color: #2e7d32;
+}
+
+.status-failed {
+	background-color: #ffebee;
+	color: #c62828;
+}
+
+mat-card-actions {
+	padding: 1rem !important;
+	display: flex;
+	justify-content: center;
+}
+
+mat-card-actions button {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+}
+
+.simple-success {
+	text-align: center;
+}
+
+.success-message {
+	font-size: 1rem;
+	color: #666;
+	margin: 1rem 0;
 }

@@ -21,6 +21,11 @@ import { OrdersService } from "../../services/orders.service";
 import { CustomersService } from "../../services/customers.service";
 import { merge } from "rxjs";
 import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
+import { PaymentService } from "../../services/payment.service";
+import { MatStepperModule } from "@angular/material/stepper";
+import { MatIconModule } from "@angular/material/icon";
+
+type OrderStep = "review" | "payment";
 
 @Component({
 	selector: "app-order-page",
@@ -36,6 +41,8 @@ import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 		ReactiveFormsModule,
 		CurrencyPipe,
 		NgFor,
+		MatStepperModule,
+		MatIconModule,
 	],
 
 	templateUrl: "./order-page.component.html",
@@ -43,6 +50,11 @@ import { takeUntilDestroyed } from "@angular/core/rxjs-interop";
 })
 export class OrderPageComponent implements OnInit {
 	isLoading = signal(false);
+	currentStep = signal<OrderStep>("review");
+	createdOrderId = signal<string | null>(null);
+	paymentError = signal<string | null>(null);
+
+	private paymentService = inject(PaymentService);
 
 	constructor(
 		private route: ActivatedRoute,
@@ -65,6 +77,20 @@ export class OrderPageComponent implements OnInit {
 		this.productData = this.fb.group({
 			quantity: [1],
 			deliveryWay: ["", Validators.required],
+		});
+
+		// Payment form (Stripe test card fields)
+		this.paymentData = this.fb.group({
+			cardNumber: [
+				"4242424242424242",
+				[Validators.required, this.cardNumberValidator()],
+			],
+			expMonth: [
+				"12",
+				[Validators.required, Validators.pattern(/^(0[1-9]|1[0-2])$/)],
+			],
+			expYear: ["25", [Validators.required, Validators.pattern(/^\d{2}$/)]],
+			cvc: ["123", [Validators.required, Validators.pattern(/^\d{3,4}$/)]],
 		});
 
 		merge(
@@ -99,6 +125,7 @@ export class OrderPageComponent implements OnInit {
 
 	customerData: FormGroup;
 	productData: FormGroup;
+	paymentData: FormGroup;
 
 	product$ = this.productsService.productById$;
 
@@ -179,6 +206,15 @@ export class OrderPageComponent implements OnInit {
 		};
 	}
 
+	cardNumberValidator(): ValidatorFn {
+		return (control: AbstractControl): ValidationErrors | null => {
+			const value = control.value?.replace(/\s/g, "");
+			const valid = /^\d{13,19}$/.test(value);
+			return valid ? null : { invalidCardNumber: true };
+		};
+	}
+
+	// Крок 1: Натиснути "Замовити" - створює замовлення та переходить до оплати
 	onPlaceOrder() {
 		if (this.customerData.invalid || this.productData.invalid) {
 			this.updateErrorMessages();
@@ -188,6 +224,8 @@ export class OrderPageComponent implements OnInit {
 		}
 
 		this.isLoading.set(true);
+		this.paymentError.set(null);
+
 		this.customersService.create(this.customerData.value).subscribe({
 			next: customer => {
 				const order = {
@@ -201,17 +239,64 @@ export class OrderPageComponent implements OnInit {
 				const productId = this.product$.getValue()?._id;
 
 				if (productId) {
-					this.isLoading.set(true);
-					this.ordersService
-						.create(order, customer._id, productId)
-						.subscribe(() => {
-							this.router.navigate(["/order/payment/success"]);
-						})
-						.add(() => this.isLoading.set(false));
+					this.ordersService.create(order, customer._id, productId).subscribe({
+						next: createdOrder => {
+							this.createdOrderId.set(createdOrder._id);
+							this.currentStep.set("payment");
+							this.isLoading.set(false);
+						},
+						error: () => this.isLoading.set(false),
+					});
 				}
 			},
 			error: () => this.isLoading.set(false),
 		});
+	}
+
+	// Крок 2: Натиснути "Оплатити" - обробляє платіж
+	onConfirmPayment() {
+		if (this.paymentData.invalid) {
+			this.markFormGroupTouched(this.paymentData);
+			return;
+		}
+
+		const orderId = this.createdOrderId();
+		if (!orderId) {
+			this.paymentError.set("Order not found");
+			return;
+		}
+
+		this.isLoading.set(true);
+		this.paymentError.set(null);
+
+		const cardDetails = {
+			cardNumber: this.paymentData.get("cardNumber")?.value,
+			expMonth: this.paymentData.get("expMonth")?.value,
+			expYear: this.paymentData.get("expYear")?.value,
+			cvc: this.paymentData.get("cvc")?.value,
+		};
+
+		this.paymentService.payOrder(orderId, cardDetails).subscribe({
+			next: result => {
+				if (result.success) {
+					this.router.navigate(["/order/payment/success"], {
+						queryParams: { orderId: orderId },
+					});
+				}
+			},
+			error: err => {
+				this.paymentError.set(
+					err.error?.message || "Payment failed. Please try again.",
+				);
+				this.isLoading.set(false);
+			},
+		});
+	}
+
+	// Повернутися до форми замовлення
+	onBackToReview() {
+		this.currentStep.set("review");
+		this.paymentError.set(null);
 	}
 
 	markFormGroupTouched(formGroup: FormGroup) {
