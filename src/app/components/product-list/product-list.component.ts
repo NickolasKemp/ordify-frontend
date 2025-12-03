@@ -41,6 +41,7 @@ export class ProductListComponent implements OnInit {
 		merge(
 			this.productsService.pagination,
 			this.productsService.searchTerm,
+			this.productsService.priceFilter,
 		).subscribe(() =>
 			this.productsService.getAll().subscribe(res => {
 				this.dataSource.data = res.products;

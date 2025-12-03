@@ -1,0 +1,14 @@
+.price-filter {
+	display: flex;
+	justify-content: center;
+	flex-wrap: wrap;
+}
+
+mat-button-toggle-group {
+	flex-wrap: wrap;
+	justify-content: center;
+}
+
+mat-button-toggle {
+	font-size: 0.875rem;
+}

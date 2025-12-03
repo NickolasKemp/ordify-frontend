@@ -8,6 +8,12 @@ import {
 } from "../models/product.model";
 import { environment } from "../../environments/environment";
 
+export interface PriceCategory {
+	label: string;
+	minPrice?: number;
+	maxPrice?: number;
+}
+
 @Injectable({
 	providedIn: "root",
 })
@@ -29,11 +35,22 @@ export class ProductsService {
 		pageSize: 10,
 	});
 	searchTerm = new BehaviorSubject<string>("");
+	priceFilter = new BehaviorSubject<PriceCategory | null>(null);
+
+	priceCategories: PriceCategory[] = [
+		{ label: "Всі ціни" },
+		{ label: "До $50", maxPrice: 50 },
+		{ label: "$50 - $100", minPrice: 50, maxPrice: 100 },
+		{ label: "$100 - $250", minPrice: 100, maxPrice: 250 },
+		{ label: "$250 - $500", minPrice: 250, maxPrice: 500 },
+		{ label: "Більше $500", minPrice: 500 },
+	];
 
 	getAll(
 		searchTerm = this.searchTerm.getValue(),
 		page = this.pagination.getValue().page,
 		pageSize = this.pagination.getValue().pageSize,
+		priceCategory = this.priceFilter.getValue(),
 	): Observable<IProductResponse> {
 		let params = new HttpParams();
 		if (searchTerm) {
@@ -43,6 +60,13 @@ export class ProductsService {
 		if (page !== undefined && pageSize !== undefined) {
 			params = params.set("page", page);
 			params = params.set("pageSize", pageSize);
+		}
+
+		if (priceCategory?.minPrice !== undefined) {
+			params = params.set("minPrice", priceCategory.minPrice);
+		}
+		if (priceCategory?.maxPrice !== undefined) {
+			params = params.set("maxPrice", priceCategory.maxPrice);
 		}
 
 		return this.http

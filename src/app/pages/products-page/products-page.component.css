@@ -9,7 +9,9 @@
 	flex-basis: 20%;
 }
 
-.search-input-wrapper {
+.filters-wrapper {
 	display: flex;
-	justify-content: center;
+	flex-direction: column;
+	align-items: center;
+	gap: 1rem;
 }

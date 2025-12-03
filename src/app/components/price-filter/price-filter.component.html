@@ -1,0 +1,13 @@
+<div class="price-filter">
+	<mat-button-toggle-group
+		[value]="selectedCategory"
+		(change)="onCategoryChange($event.value)"
+		aria-label="Price category filter"
+	>
+		@for (category of priceCategories; track category.label) {
+			<mat-button-toggle [value]="category">
+				{{ category.label }}
+			</mat-button-toggle>
+		}
+	</mat-button-toggle-group>
+</div>
