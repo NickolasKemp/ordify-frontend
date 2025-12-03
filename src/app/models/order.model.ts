@@ -1,5 +1,6 @@
 import { ICustomer } from "./customer.model";
 import { EnumDeliveryWay, IProduct } from "./product.model";
+import { IAgreement } from "./agreement.model";
 
 export type PaymentStatus = "pending" | "paid" | "failed";
 export type OrderStatus = "pending" | "processing" | "completed" | "cancelled";
@@ -11,6 +12,7 @@ export interface IOrder {
 	price: number;
 	product: IProduct;
 	customer: ICustomer;
+	agreement?: IAgreement;
 	deliveryWay: EnumDeliveryWay;
 	// Payment fields
 	paymentStatus?: PaymentStatus;

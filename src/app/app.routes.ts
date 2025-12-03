@@ -10,6 +10,7 @@ import { Role } from "./roles";
 import { AdminOrderDetailsPageComponent } from "./pages/admin/admin-order-details-page/admin-order-details-page.component";
 import { AdminProductDetailsPageComponent } from "./pages/admin/admin-product-details-page/admin-product-details-page.component";
 import { AdminCustomersPageComponent } from "./pages/admin/admin-customers-page/admin-customers-page.component";
+import { AdminCustomerDetailsPageComponent } from "./pages/admin/admin-customer-details-page/admin-customer-details-page.component";
 import { AdminDashboardPageComponent } from "./pages/admin/admin-dashboard-page/admin-dashboard-page.component";
 
 export const routes: Routes = [
@@ -61,6 +62,14 @@ export const routes: Routes = [
 			roles: [Role.USER],
 		},
 		component: AdminCustomersPageComponent,
+	},
+	{
+		path: "admin/customers/:id",
+		canActivate: [hasRoleGuard],
+		data: {
+			roles: [Role.USER],
+		},
+		component: AdminCustomerDetailsPageComponent,
 	},
 	{
 		path: "admin/orders/:id",

@@ -1,10 +1,162 @@
 <section class="order-page">
 	<!-- Крок 1: Огляд замовлення -->
 	<div *ngIf="currentStep() === 'review'" class="order-step">
-		<app-customer-form
-			[errorMessages]="errorMessages().customer"
-			[formGroup]="customerData"
-		></app-customer-form>
+		<!-- Customer type toggle -->
+		<div class="customer-type-toggle">
+			<button
+				mat-stroked-button
+				[class.active]="orderMode() === 'new'"
+				(click)="switchToNewCustomer()"
+			>
+				<mat-icon>person_add</mat-icon>
+				New Customer
+			</button>
+			<button
+				mat-stroked-button
+				[class.active]="orderMode() === 'returning'"
+				(click)="switchToReturningCustomer()"
+			>
+				<mat-icon>person</mat-icon>
+				Returning Customer
+			</button>
+		</div>
+
+		<!-- Returning customer: Token input -->
+		<div *ngIf="orderMode() === 'returning'" class="token-section">
+			<h3>Enter Your Client Token</h3>
+			<p class="token-description">
+				If you have placed an order before, enter your client token to use your
+				existing agreement.
+			</p>
+			<form [formGroup]="tokenData" class="token-form">
+				<mat-form-field appearance="outline" class="full-width">
+					<mat-label>Client Token</mat-label>
+					<input
+						formControlName="clientToken"
+						matInput
+						placeholder="Enter your client token"
+					/>
+					<mat-icon matSuffix>vpn_key</mat-icon>
+					<mat-error *ngIf="tokenValidationError()">
+						{{ tokenValidationError() }}
+					</mat-error>
+				</mat-form-field>
+				<button
+					mat-flat-button
+					type="button"
+					[disabled]="isValidatingToken()"
+					(click)="validateClientToken(tokenData.get('clientToken')?.value)"
+				>
+					{{ isValidatingToken() ? "Validating..." : "Validate Token" }}
+				</button>
+			</form>
+
+			<!-- Show agreement info when token is valid -->
+			<div *ngIf="currentAgreement()" class="agreement-info">
+				<mat-icon class="success-icon">check_circle</mat-icon>
+				<h4>Token Valid!</h4>
+				<p>
+					<strong>Customer:</strong> {{ currentAgreement()?.customer?.name }}
+				</p>
+				<p>
+					<strong>Agreement valid until:</strong>
+					{{ currentAgreement()?.ends_at | date: "mediumDate" }}
+				</p>
+			</div>
+		</div>
+
+		<!-- New customer: Customer form -->
+		<div *ngIf="orderMode() === 'new'">
+			<app-customer-form
+				[errorMessages]="errorMessages().customer"
+				[formGroup]="customerData"
+			></app-customer-form>
+
+			<!-- Agreement Period Selection -->
+			<div class="agreement-section">
+				<h3>Agreement Period</h3>
+				<p class="section-description">
+					Select how long you want your agreement to be valid.
+				</p>
+				<form [formGroup]="agreementData">
+					<mat-form-field appearance="outline" class="full-width">
+						<mat-label>Agreement Duration</mat-label>
+						<mat-select formControlName="period">
+							<mat-option
+								*ngFor="let option of agreementPeriodOptions"
+								[value]="option.value"
+							>
+								{{ option.label }}
+							</mat-option>
+						</mat-select>
+					</mat-form-field>
+				</form>
+			</div>
+
+			<!-- Legal Entity Form -->
+			<div class="legal-entity-section">
+				<h3>Legal Entity Information</h3>
+				<p class="section-description">
+					Please provide your company's legal details for the agreement.
+				</p>
+				<form [formGroup]="legalEntityData" class="legal-entity-form">
+					<mat-form-field appearance="outline" class="full-width">
+						<mat-label>Company Name</mat-label>
+						<input formControlName="name" matInput required />
+						<mat-icon matSuffix>business</mat-icon>
+					</mat-form-field>
+
+					<div class="form-row">
+						<mat-form-field appearance="outline">
+							<mat-label>Registration Number</mat-label>
+							<input formControlName="registrationNumber" matInput required />
+						</mat-form-field>
+						<mat-form-field appearance="outline">
+							<mat-label>Director Name</mat-label>
+							<input formControlName="directorName" matInput required />
+							<mat-icon matSuffix>person</mat-icon>
+						</mat-form-field>
+					</div>
+
+					<h4>Legal Address</h4>
+					<div formGroupName="legalAddress">
+						<mat-form-field appearance="outline" class="full-width">
+							<mat-label>Street</mat-label>
+							<input formControlName="street" matInput required />
+						</mat-form-field>
+						<div class="form-row">
+							<mat-form-field appearance="outline">
+								<mat-label>City</mat-label>
+								<input formControlName="city" matInput required />
+							</mat-form-field>
+							<mat-form-field appearance="outline">
+								<mat-label>State</mat-label>
+								<input formControlName="state" matInput required />
+							</mat-form-field>
+							<mat-form-field appearance="outline">
+								<mat-label>ZIP Code</mat-label>
+								<input formControlName="zip" matInput required />
+							</mat-form-field>
+						</div>
+					</div>
+
+					<h4>Bank Account</h4>
+					<div formGroupName="bankAccount">
+						<div class="form-row">
+							<mat-form-field appearance="outline">
+								<mat-label>Bank Name</mat-label>
+								<input formControlName="name" matInput required />
+								<mat-icon matSuffix>account_balance</mat-icon>
+							</mat-form-field>
+							<mat-form-field appearance="outline">
+								<mat-label>IBAN</mat-label>
+								<input formControlName="iban" matInput required />
+							</mat-form-field>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
 
 		<h3 class="order-page__buying-title">You're buying</h3>
 
@@ -87,6 +239,23 @@
 				<mat-icon>arrow_back</mat-icon>
 			</button>
 			<h2>Payment</h2>
+		</div>
+
+		<!-- Show client token for new customers -->
+		<div *ngIf="newClientToken()" class="client-token-display">
+			<div class="token-header">
+				<mat-icon>vpn_key</mat-icon>
+				<h3>Your Client Token</h3>
+			</div>
+			<p class="token-description">
+				Save this token! You'll need it for future orders under your agreement.
+			</p>
+			<div class="token-value">
+				<code>{{ newClientToken() }}</code>
+				<button mat-icon-button (click)="copyToken()" title="Copy token">
+					<mat-icon>content_copy</mat-icon>
+				</button>
+			</div>
 		</div>
 
 		<div class="payment-summary">

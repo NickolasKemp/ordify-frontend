@@ -191,3 +191,196 @@
 .order-page__button button mat-icon {
 	margin-right: 0.5rem;
 }
+
+/* Customer Type Toggle */
+.customer-type-toggle {
+	display: flex;
+	gap: 1rem;
+	margin-bottom: 1.5rem;
+}
+
+.customer-type-toggle button {
+	flex: 1;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	gap: 0.5rem;
+	padding: 0.75rem 1rem;
+}
+
+.customer-type-toggle button.active {
+	background-color: #1976d2;
+	color: white;
+	border-color: #1976d2;
+}
+
+/* Token Section */
+.token-section {
+	margin-bottom: 1.5rem;
+	padding: 1rem;
+	background-color: #f5f5f5;
+	border-radius: 8px;
+}
+
+.token-section h3 {
+	margin: 0 0 0.5rem 0;
+	font-size: 1.25rem;
+}
+
+.token-description {
+	color: #666;
+	margin-bottom: 1rem;
+	font-size: 0.9rem;
+}
+
+.token-form {
+	display: flex;
+	gap: 1rem;
+	align-items: flex-start;
+}
+
+.token-form .full-width {
+	flex: 1;
+}
+
+/* Agreement Info (when token is valid) */
+.agreement-info {
+	margin-top: 1rem;
+	padding: 1rem;
+	background-color: #e8f5e9;
+	border-radius: 8px;
+	border-left: 4px solid #4caf50;
+}
+
+.agreement-info .success-icon {
+	color: #4caf50;
+	font-size: 2rem;
+	width: 2rem;
+	height: 2rem;
+}
+
+.agreement-info h4 {
+	margin: 0.5rem 0;
+	color: #2e7d32;
+}
+
+.agreement-info p {
+	margin: 0.25rem 0;
+	color: #333;
+}
+
+/* Client Token Display (after order creation) */
+.client-token-display {
+	background-color: #fff3e0;
+	border: 2px solid #ff9800;
+	border-radius: 8px;
+	padding: 1rem;
+	margin-bottom: 1.5rem;
+}
+
+.token-header {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+	margin-bottom: 0.5rem;
+}
+
+.token-header mat-icon {
+	color: #f57c00;
+}
+
+.token-header h3 {
+	margin: 0;
+	color: #e65100;
+}
+
+.client-token-display .token-description {
+	color: #bf360c;
+	font-weight: 500;
+}
+
+.token-value {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+	background-color: white;
+	padding: 0.75rem;
+	border-radius: 4px;
+	border: 1px solid #ffcc80;
+	overflow-x: auto;
+}
+
+.token-value code {
+	flex: 1;
+	font-family: "Courier New", monospace;
+	font-size: 0.85rem;
+	word-break: break-all;
+	color: #333;
+}
+
+.token-value button {
+	flex-shrink: 0;
+}
+
+/* Agreement Section */
+.agreement-section {
+	margin: 1.5rem 0;
+	padding: 1rem;
+	background-color: #e3f2fd;
+	border-radius: 8px;
+	border-left: 4px solid #1976d2;
+}
+
+.agreement-section h3 {
+	margin: 0 0 0.5rem 0;
+	color: #1565c0;
+}
+
+.section-description {
+	color: #666;
+	margin-bottom: 1rem;
+	font-size: 0.9rem;
+}
+
+/* Legal Entity Section */
+.legal-entity-section {
+	margin: 1.5rem 0;
+	padding: 1.5rem;
+	background-color: #fafafa;
+	border-radius: 8px;
+	border: 1px solid #e0e0e0;
+}
+
+.legal-entity-section h3 {
+	margin: 0 0 0.5rem 0;
+	color: #333;
+}
+
+.legal-entity-section h4 {
+	margin: 1rem 0 0.5rem 0;
+	color: #666;
+	font-size: 0.95rem;
+	border-bottom: 1px solid #e0e0e0;
+	padding-bottom: 0.25rem;
+}
+
+.legal-entity-form {
+	display: flex;
+	flex-direction: column;
+}
+
+.legal-entity-form .full-width {
+	width: 100%;
+}
+
+.form-row {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+	gap: 1rem;
+}
+
+@media screen and (max-width: 600px) {
+	.form-row {
+		grid-template-columns: 1fr;
+	}
+}

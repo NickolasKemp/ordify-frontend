@@ -1,0 +1,124 @@
+.customer-details-page {
+	max-width: 900px;
+	margin: 0 auto;
+	padding: 1rem;
+}
+
+.page-header {
+	display: flex;
+	align-items: center;
+	gap: 1rem;
+	margin-bottom: 1.5rem;
+}
+
+.page-header h2 {
+	margin: 0;
+}
+
+.loading,
+.error {
+	text-align: center;
+	padding: 2rem;
+}
+
+.error {
+	color: #c62828;
+}
+
+.content {
+	display: flex;
+	flex-direction: column;
+	gap: 1.5rem;
+}
+
+.info-card {
+	padding: 1rem;
+}
+
+.info-card mat-card-header {
+	margin-bottom: 1rem;
+}
+
+.info-card mat-icon[mat-card-avatar] {
+	font-size: 24px;
+	width: 40px;
+	height: 40px;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background-color: #e3f2fd;
+	border-radius: 50%;
+	color: #1976d2;
+}
+
+.info-grid {
+	display: grid;
+	grid-template-columns: repeat(2, 1fr);
+	gap: 1rem;
+}
+
+.info-item {
+	display: flex;
+	flex-direction: column;
+	gap: 0.25rem;
+}
+
+.info-item.full-width {
+	grid-column: 1 / -1;
+}
+
+.info-item .label {
+	font-size: 0.85rem;
+	color: #666;
+	text-transform: uppercase;
+	letter-spacing: 0.5px;
+}
+
+.info-item .value {
+	font-size: 1rem;
+	color: #333;
+}
+
+.token-value {
+	font-family: "Courier New", monospace;
+	font-size: 0.85rem;
+	background-color: #f5f5f5;
+	padding: 0.5rem;
+	border-radius: 4px;
+	word-break: break-all;
+	display: block;
+}
+
+mat-divider {
+	margin: 1rem 0;
+}
+
+h4 {
+	margin: 0.5rem 0;
+	color: #666;
+	font-size: 0.9rem;
+}
+
+.no-agreement {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+	padding: 1rem;
+	background-color: #fff3e0;
+	border-radius: 8px;
+	color: #e65100;
+}
+
+.no-agreement mat-icon {
+	color: #f57c00;
+}
+
+.no-agreement p {
+	margin: 0;
+}
+
+@media screen and (max-width: 600px) {
+	.info-grid {
+		grid-template-columns: 1fr;
+	}
+}

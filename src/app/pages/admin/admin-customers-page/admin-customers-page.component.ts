@@ -5,7 +5,7 @@ import { MatSort, MatSortModule, Sort } from "@angular/material/sort";
 import { MatTableDataSource, MatTableModule } from "@angular/material/table";
 import { CustomersService } from "../../../services/customers.service";
 import { LiveAnnouncer } from "@angular/cdk/a11y";
-import { Router } from "@angular/router";
+import { Router, RouterLink } from "@angular/router";
 import { ICustomer } from "../../../models/customer.model";
 import { ConfirmationDialogService } from "../../../services/confirmation-dialog.service";
 import { FormControl, FormsModule, ReactiveFormsModule } from "@angular/forms";
@@ -25,6 +25,7 @@ import { MatInputModule } from "@angular/material/input";
 		ReactiveFormsModule,
 		MatInputModule,
 		FormsModule,
+		RouterLink,
 	],
 	templateUrl: "./admin-customers-page.component.html",
 	styleUrl: "./admin-customers-page.component.css",

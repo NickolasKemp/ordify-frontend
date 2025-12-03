@@ -1,0 +1,142 @@
+<div class="customer-details-page">
+	<div class="page-header">
+		<button mat-icon-button (click)="goBack()">
+			<mat-icon>arrow_back</mat-icon>
+		</button>
+		<h2>Customer Details</h2>
+	</div>
+
+	<div *ngIf="isLoading()" class="loading">Loading...</div>
+
+	<div *ngIf="error()" class="error">{{ error() }}</div>
+
+	<div *ngIf="customer() && !isLoading()" class="content">
+		<!-- Customer Info Card -->
+		<mat-card class="info-card">
+			<mat-card-header>
+				<mat-icon mat-card-avatar>person</mat-icon>
+				<mat-card-title>{{ customer()?.name }}</mat-card-title>
+				<mat-card-subtitle>Customer Information</mat-card-subtitle>
+			</mat-card-header>
+			<mat-card-content>
+				<div class="info-grid">
+					<div class="info-item">
+						<span class="label">Contact Person</span>
+						<span class="value">{{ customer()?.contactPerson }}</span>
+					</div>
+					<div class="info-item">
+						<span class="label">Phone</span>
+						<span class="value">+1{{ customer()?.phone }}</span>
+					</div>
+					<div class="info-item full-width">
+						<span class="label">Address</span>
+						<span class="value">
+							{{ customer()?.street }}, {{ customer()?.city }},
+							{{ customer()?.state }} {{ customer()?.zip }}
+						</span>
+					</div>
+				</div>
+			</mat-card-content>
+		</mat-card>
+
+		<!-- Agreement Info Card -->
+		<mat-card class="info-card" *ngIf="agreement()">
+			<mat-card-header>
+				<mat-icon mat-card-avatar>description</mat-icon>
+				<mat-card-title>Agreement</mat-card-title>
+				<mat-card-subtitle>
+					<mat-chip-set>
+						<mat-chip
+							[highlighted]="isAgreementActive()"
+							[color]="isAgreementActive() ? 'primary' : 'warn'"
+						>
+							{{ isAgreementActive() ? "Active" : "Expired" }}
+						</mat-chip>
+					</mat-chip-set>
+				</mat-card-subtitle>
+			</mat-card-header>
+			<mat-card-content>
+				<div class="info-grid">
+					<div class="info-item">
+						<span class="label">Created At</span>
+						<span class="value">{{
+							agreement()?.created_at | date: "mediumDate"
+						}}</span>
+					</div>
+					<div class="info-item">
+						<span class="label">Valid Until</span>
+						<span class="value">{{
+							agreement()?.ends_at | date: "mediumDate"
+						}}</span>
+					</div>
+					<div class="info-item full-width">
+						<span class="label">Client Token</span>
+						<code class="token-value">{{ agreement()?.clientToken }}</code>
+					</div>
+				</div>
+			</mat-card-content>
+		</mat-card>
+
+		<div *ngIf="!agreement()" class="no-agreement">
+			<mat-icon>info</mat-icon>
+			<p>No agreement found for this customer.</p>
+		</div>
+
+		<!-- Legal Entity Card -->
+		<mat-card class="info-card" *ngIf="agreement()?.legalEntity">
+			<mat-card-header>
+				<mat-icon mat-card-avatar>business</mat-icon>
+				<mat-card-title>{{ agreement()?.legalEntity?.name }}</mat-card-title>
+				<mat-card-subtitle>Legal Entity Information</mat-card-subtitle>
+			</mat-card-header>
+			<mat-card-content>
+				<div class="info-grid">
+					<div class="info-item">
+						<span class="label">Registration Number</span>
+						<span class="value">{{
+							agreement()?.legalEntity?.registrationNumber
+						}}</span>
+					</div>
+					<div class="info-item">
+						<span class="label">Director</span>
+						<span class="value">{{
+							agreement()?.legalEntity?.directorName
+						}}</span>
+					</div>
+				</div>
+
+				<mat-divider></mat-divider>
+
+				<h4>Legal Address</h4>
+				<div class="info-grid">
+					<div class="info-item full-width">
+						<span class="value">
+							{{ agreement()?.legalEntity?.legalAddress?.street }},
+							{{ agreement()?.legalEntity?.legalAddress?.city }},
+							{{ agreement()?.legalEntity?.legalAddress?.state }}
+							{{ agreement()?.legalEntity?.legalAddress?.zip }}
+						</span>
+					</div>
+				</div>
+
+				<mat-divider></mat-divider>
+
+				<h4>Bank Account</h4>
+				<div class="info-grid">
+					<div class="info-item">
+						<span class="label">Bank Name</span>
+						<span class="value">{{
+							agreement()?.legalEntity?.bankAccount?.name
+						}}</span>
+					</div>
+					<div class="info-item">
+						<span class="label">IBAN</span>
+						<span class="value">{{
+							agreement()?.legalEntity?.bankAccount?.iban
+						}}</span>
+					</div>
+				</div>
+			</mat-card-content>
+		</mat-card>
+	</div>
+</div>

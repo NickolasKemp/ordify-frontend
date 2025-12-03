@@ -19,6 +19,17 @@ table {
 	color: var(--danger);
 }
 
+.view-link {
+	cursor: pointer;
+	color: #1976d2;
+	margin-right: 1rem;
+}
+
+.view-link:hover,
+.delete-link:hover {
+	text-decoration: underline;
+}
+
 .details-link:hover {
 	text-decoration: underline;
 }

@@ -1,8 +1,9 @@
-import { HttpClient } from "@angular/common/http";
+import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { BehaviorSubject, map, Observable, switchMap, tap } from "rxjs";
 import { IOrder, OrderStatus } from "../models/order.model";
 import { environment } from "../../environments/environment";
+import { IAgreementCreateResponse } from "../models/agreement.model";
 
 @Injectable({
 	providedIn: "root",
@@ -32,6 +33,9 @@ export class OrdersService {
 			.pipe(tap(prod => this.orderById$.next(prod)));
 	}
 
+	/**
+	 * Legacy create method (without agreement)
+	 */
 	create(
 		order: Omit<IOrder, "_id" | "createdAt" | "product" | "customer">,
 		customerId: string,
@@ -42,6 +46,39 @@ export class OrdersService {
 				`${this.API_URL}/${this.BASE}/${customerId}/${productId}`,
 				order,
 			)
+			.pipe(switchMap(order => this.getAll().pipe(map(() => order))));
+	}
+
+	/**
+	 * Create first order with agreement - returns client token for future orders
+	 */
+	createWithAgreement(
+		order: Omit<IOrder, "_id" | "createdAt" | "product" | "customer">,
+		customerId: string,
+		productId: string,
+		agreementData?: { ends_at?: Date; legalEntity?: string },
+	): Observable<IAgreementCreateResponse> {
+		return this.http
+			.post<IAgreementCreateResponse>(
+				`${this.API_URL}/${this.BASE}/agreement/${customerId}/${productId}`,
+				{ order, agreementData },
+			)
+			.pipe(switchMap(response => this.getAll().pipe(map(() => response))));
+	}
+
+	/**
+	 * Create order using client token (for returning customers)
+	 */
+	createWithToken(
+		order: Omit<IOrder, "_id" | "createdAt" | "product" | "customer">,
+		productId: string,
+		clientToken: string,
+	): Observable<IOrder> {
+		const headers = new HttpHeaders().set("x-client-token", clientToken);
+		return this.http
+			.post<IOrder>(`${this.API_URL}/${this.BASE}/token/${productId}`, order, {
+				headers,
+			})
 			.pipe(switchMap(order => this.getAll().pipe(map(() => order))));
 	}
 
