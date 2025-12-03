@@ -1,7 +1,7 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { BehaviorSubject, map, Observable, switchMap, tap } from "rxjs";
-import { IOrder } from "../models/order.model";
+import { IOrder, OrderStatus } from "../models/order.model";
 import { environment } from "../../environments/environment";
 
 @Injectable({
@@ -43,6 +43,21 @@ export class OrdersService {
 				order,
 			)
 			.pipe(switchMap(order => this.getAll().pipe(map(() => order))));
+	}
+
+	update(id: string, order: Partial<IOrder>): Observable<IOrder> {
+		return this.http
+			.put<IOrder>(`${this.API_URL}/${this.BASE}/${id}`, order)
+			.pipe(
+				tap(updatedOrder => {
+					this.orderById$.next(updatedOrder);
+				}),
+				switchMap(updatedOrder => this.getAll().pipe(map(() => updatedOrder))),
+			);
+	}
+
+	updateStatus(id: string, status: OrderStatus): Observable<IOrder> {
+		return this.update(id, { status });
 	}
 
 	delete(id: string): Observable<IOrder> {

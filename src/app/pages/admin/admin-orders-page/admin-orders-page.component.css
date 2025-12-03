@@ -94,3 +94,32 @@ td {
 		margin-top: 4%;
 	}
 }
+
+/* Status Badge Styles */
+.status-badge {
+	padding: 0.25rem 0.5rem;
+	border-radius: 12px;
+	font-weight: 500;
+	font-size: 0.75rem;
+	white-space: nowrap;
+}
+
+.status-pending {
+	background-color: #fff3e0;
+	color: #e65100;
+}
+
+.status-processing {
+	background-color: #e3f2fd;
+	color: #1565c0;
+}
+
+.status-completed {
+	background-color: #e8f5e9;
+	color: #2e7d32;
+}
+
+.status-cancelled {
+	background-color: #ffebee;
+	color: #c62828;
+}

@@ -9,6 +9,47 @@
 
 	<h1 class="order-details__title">Order details</h1>
 
+	<!-- Order Status Section -->
+	<div class="order-details__status-section order-details__section">
+		<div class="status-header">
+			<span>Status:</span>
+			<span class="status-badge" [ngClass]="getStatusClass(order.status)">
+				{{ getStatusLabel(order.status) }}
+			</span>
+		</div>
+
+		<mat-form-field appearance="outline" class="status-select">
+			<mat-label>Change status</mat-label>
+			<mat-select
+				[value]="order.status || 'pending'"
+				(selectionChange)="onStatusChange(order._id, $event.value)"
+				[disabled]="isUpdating()"
+			>
+				<mat-option *ngFor="let status of orderStatuses" [value]="status.value">
+					{{ status.label }}
+				</mat-option>
+			</mat-select>
+		</mat-form-field>
+
+		<button
+			*ngIf="order.status !== 'completed'"
+			mat-raised-button
+			color="primary"
+			(click)="completeOrder(order._id)"
+			[disabled]="isUpdating()"
+			class="complete-btn"
+		>
+			<mat-icon>check_circle</mat-icon>
+			Complete Order
+		</button>
+
+		<div *ngIf="order.completedAt" class="completed-info">
+			<span>Completed: {{ order.completedAt | date: "medium" }}</span>
+		</div>
+	</div>
+
+	<hr class="solid" />
+
 	<div class="order-details__order-data order-details__section">
 		<span>Date</span>
 		<p>{{ order.created_at | date }}</p>
